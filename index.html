@@ -1,0 +1,964 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>WIIN AAR 門市人員任務與週進度追蹤表</title>
+  <!-- Google Fonts: Inter & Noto Sans TC -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Noto+Sans+TC:wght@400;500;700&display=swap" rel="stylesheet">
+  
+  <style>
+    :root {
+      --bg-main: #f8fafc;
+      --bg-card: #ffffff;
+      --border-color: #e2e8f0;
+      --border-sticky: #cbd5e1;
+      --text-main: #0f172a;
+      --text-muted: #64748b;
+      
+      --color-green: #10b981;
+      --color-green-light: #ecfdf5;
+      --color-green-glow: rgba(16, 185, 129, 0.4);
+      
+      --color-red: #ef4444;
+      --color-red-light: #fef2f2;
+      --color-red-glow: rgba(239, 68, 68, 0.35);
+      
+      --color-gray-light: #cbd5e1;
+      --color-gray-dark: #64748b;
+      --color-orange: #f97316;
+      --color-orange-light: #fff7ed;
+
+      --sticky-col-a-w: 140px;
+      --sticky-col-b-w: 160px;
+      --sticky-col-c-w: 100px;
+      --header-row1-h: 48px;
+      --header-row2-h: 40px;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: 'Inter', 'Noto Sans TC', -apple-system, BlinkMacSystemFont, sans-serif;
+    }
+
+    body {
+      background-color: var(--bg-main);
+      color: var(--text-main);
+      min-height: 100vh;
+      padding: 16px;
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    /* App Header & Title */
+    .app-header {
+      background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);
+      color: #ffffff;
+      padding: 20px 24px;
+      border-radius: 16px;
+      box-shadow: 0 10px 25px -5px rgba(15, 23, 42, 0.25);
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      align-items: center;
+      gap: 16px;
+    }
+
+    .app-header h1 {
+      font-size: 1.4rem;
+      font-weight: 700;
+      letter-spacing: -0.02em;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .app-header h1 span.badge {
+      background: rgba(255, 255, 255, 0.15);
+      font-size: 0.75rem;
+      padding: 4px 10px;
+      border-radius: 20px;
+      font-weight: 500;
+      backdrop-filter: blur(4px);
+    }
+
+    .header-stats {
+      display: flex;
+      gap: 16px;
+      flex-wrap: wrap;
+    }
+
+    .stat-pill {
+      background: rgba(255, 255, 255, 0.1);
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      padding: 6px 14px;
+      border-radius: 10px;
+      font-size: 0.85rem;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .stat-pill strong {
+      font-size: 1.05rem;
+      color: #38bdf8;
+    }
+
+    /* Controls Bar & Legend */
+    .control-panel {
+      background: var(--bg-card);
+      border-radius: 14px;
+      padding: 16px 20px;
+      border: 1px solid var(--border-color);
+      box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+    }
+
+    .controls-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .search-group {
+      display: flex;
+      gap: 10px;
+      flex: 1;
+      min-width: 280px;
+    }
+
+    .search-input, .select-input {
+      padding: 9px 14px;
+      border: 1px solid var(--border-color);
+      border-radius: 8px;
+      font-size: 0.9rem;
+      outline: none;
+      transition: all 0.2s;
+      background: #f8fafc;
+    }
+
+    .search-input {
+      flex: 1;
+    }
+
+    .search-input:focus, .select-input:focus {
+      border-color: #3b82f6;
+      background: #ffffff;
+      box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.15);
+    }
+
+    /* Legend Section */
+    .legend-container {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 16px;
+      align-items: center;
+      padding-top: 10px;
+      border-top: 1px dashed var(--border-color);
+      font-size: 0.82rem;
+      color: var(--text-muted);
+    }
+
+    .legend-title {
+      font-weight: 600;
+      color: var(--text-main);
+    }
+
+    .legend-item {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .legend-dot {
+      width: 12px;
+      height: 12px;
+      border-radius: 50%;
+      display: inline-block;
+    }
+    
+    .legend-dot.green { background: var(--color-green); box-shadow: 0 0 6px var(--color-green-glow); }
+    .legend-dot.red { background: var(--color-red); box-shadow: 0 0 6px var(--color-red-glow); }
+    
+    .legend-bar-sample {
+      width: 24px;
+      height: 10px;
+      border-radius: 3px;
+      display: inline-block;
+    }
+    .legend-bar-sample.green { background: var(--color-green); }
+    .legend-bar-sample.light-gray { background: var(--color-gray-light); border: 1px solid #94a3b8; }
+    .legend-bar-sample.dark-gray { background: var(--color-gray-dark); }
+    .legend-bar-sample.orange { background: var(--color-orange); }
+
+    /* Table Main Wrapper */
+    .table-container {
+      background: var(--bg-card);
+      border-radius: 14px;
+      border: 1px solid var(--border-color);
+      box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.05), 0 4px 6px -2px rgba(0, 0, 0, 0.02);
+      overflow: auto;
+      max-height: calc(100vh - 270px);
+      position: relative;
+      -webkit-overflow-scrolling: touch;
+    }
+
+    table {
+      border-collapse: separate;
+      border-spacing: 0;
+      width: max-content;
+      font-size: 0.85rem;
+    }
+
+    /* Header Styling & Sticky Logic */
+    thead th {
+      background: #f1f5f9;
+      color: #334155;
+      font-weight: 600;
+      text-align: center;
+      padding: 8px 10px;
+      border-bottom: 1px solid var(--border-sticky);
+      border-right: 1px solid var(--border-color);
+      white-space: pre-line;
+      position: sticky;
+      z-index: 20;
+    }
+
+    thead tr:nth-child(1) th {
+      top: 0;
+      height: var(--header-row1-h);
+    }
+
+    thead tr:nth-child(2) th {
+      top: var(--header-row1-h);
+      height: var(--header-row2-h);
+    }
+
+    /* Merged Header Title for WK1~WK13 */
+    .mypal-header {
+      background: #e2e8f0 !important;
+      color: #0f172a;
+      font-size: 0.9rem;
+    }
+
+    /* Subheader label style in Row 2 */
+    .sub-header-label {
+      font-size: 0.75rem;
+      color: #64748b;
+      font-weight: 500;
+    }
+
+    /* Locked Columns A, B, C */
+    .col-dealer {
+      position: sticky;
+      left: 0px;
+      width: var(--sticky-col-a-w);
+      min-width: var(--sticky-col-a-w);
+      max-width: var(--sticky-col-a-w);
+    }
+
+    .col-store {
+      position: sticky;
+      left: var(--sticky-col-a-w);
+      width: var(--sticky-col-b-w);
+      min-width: var(--sticky-col-b-w);
+      max-width: var(--sticky-col-b-w);
+    }
+
+    .col-name {
+      position: sticky;
+      left: calc(var(--sticky-col-a-w) + var(--sticky-col-b-w));
+      width: var(--sticky-col-c-w);
+      min-width: var(--sticky-col-c-w);
+      max-width: var(--sticky-col-c-w);
+      border-right: 2px solid #cbd5e1 !important; /* Boundary shadow divider */
+    }
+
+    /* Top-Left Locked Intersections (A1:C2) */
+    thead tr:nth-child(1) th.col-dealer,
+    thead tr:nth-child(1) th.col-store,
+    thead tr:nth-child(1) th.col-name {
+      top: 0;
+      z-index: 30;
+      background: #e2e8f0;
+    }
+
+    thead tr:nth-child(2) th.col-dealer,
+    thead tr:nth-child(2) th.col-store,
+    thead tr:nth-child(2) th.col-name {
+      top: var(--header-row1-h);
+      z-index: 30;
+      background: #e2e8f0;
+    }
+
+    /* Body Rows & Cells */
+    tbody tr {
+      transition: background-color 0.15s ease;
+    }
+
+    tbody tr:nth-child(even) {
+      background-color: #f8fafc;
+    }
+
+    tbody tr:hover {
+      background-color: #f1f5f9 !important;
+    }
+
+    tbody td {
+      padding: 8px 10px;
+      border-bottom: 1px solid var(--border-color);
+      border-right: 1px solid var(--border-color);
+      text-align: center;
+      vertical-align: middle;
+      height: 44px;
+      white-space: nowrap;
+    }
+
+    /* Body Locked Column Backgrounds */
+    tbody td.col-dealer,
+    tbody td.col-store,
+    tbody td.col-name {
+      position: sticky;
+      z-index: 10;
+      background: #ffffff;
+      text-align: left;
+    }
+
+    tbody tr:nth-child(even) td.col-dealer,
+    tbody tr:nth-child(even) td.col-store,
+    tbody tr:nth-child(even) td.col-name {
+      background: #f8fafc;
+    }
+
+    tbody tr:hover td.col-dealer,
+    tbody tr:hover td.col-store,
+    tbody tr:hover td.col-name {
+      background: #e2e8f0 !important;
+    }
+
+    .text-ellipsis {
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+      display: block;
+    }
+
+    /* Pure Dot Light Indicators (非 H~T 欄位) */
+    .light-indicator {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      padding: 4px 10px;
+      border-radius: 20px;
+      font-size: 0.8rem;
+      font-weight: 600;
+      user-select: none;
+    }
+
+    .light-indicator.pure-dot {
+      padding: 4px;
+      border: none;
+      background: transparent;
+    }
+
+    .light-indicator .dot {
+      width: 14px;
+      height: 14px;
+      border-radius: 50%;
+      flex-shrink: 0;
+      display: inline-block;
+    }
+
+    .light-green {
+      background-color: var(--color-green-light);
+      color: #065f46;
+      border: 1px solid rgba(16, 185, 129, 0.3);
+    }
+    .light-green .dot {
+      background-color: var(--color-green);
+      box-shadow: 0 0 8px var(--color-green-glow);
+    }
+
+    .light-red {
+      background-color: var(--color-red-light);
+      color: #991b1b;
+      border: 1px solid rgba(239, 68, 68, 0.3);
+    }
+    .light-red .dot {
+      background-color: var(--color-red);
+      box-shadow: 0 0 6px var(--color-red-glow);
+    }
+
+    /* External Web Link Icon Button in Header Row 2 */
+    .header-link-btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      padding: 3px 8px;
+      border-radius: 6px;
+      background: #eff6ff;
+      color: #2563eb;
+      border: 1px solid #bfdbfe;
+      text-decoration: none;
+      font-size: 0.75rem;
+      font-weight: 600;
+      transition: all 0.2s ease;
+      cursor: pointer;
+      gap: 4px;
+    }
+    .header-link-btn:hover {
+      background: #2563eb;
+      color: #ffffff;
+      border-color: #1d4ed8;
+      transform: translateY(-1px);
+      box-shadow: 0 3px 8px rgba(37, 99, 235, 0.3);
+    }
+    .header-link-btn .link-svg {
+      width: 13px;
+      height: 13px;
+    }
+
+    /* Weekly Progress Cells (H~T 欄位, WK1~WK13) - Seamless Continuous Progress Bar */
+    .wk-cell {
+      padding: 4px 0px !important;
+      width: 48px;
+      min-width: 48px;
+      max-width: 48px;
+    }
+
+    .wk-cell.merge-border-right {
+      border-right-color: transparent !important;
+    }
+
+    .wk-bar-segment {
+      width: 100%;
+      height: 28px;
+      display: block;
+      transition: transform 0.15s ease;
+      cursor: pointer;
+      user-select: none;
+      border-radius: 6px;
+    }
+
+    .wk-bar-segment.merge-left {
+      border-top-left-radius: 0 !important;
+      border-bottom-left-radius: 0 !important;
+    }
+
+    .wk-bar-segment.merge-right {
+      border-top-right-radius: 0 !important;
+      border-bottom-right-radius: 0 !important;
+    }
+
+    .wk-bar-segment:hover {
+      transform: scaleY(1.15);
+      z-index: 5;
+    }
+
+    /* Green Segment: Completed */
+    .bar-green {
+      background-color: var(--color-green);
+      box-shadow: 0 2px 4px rgba(16, 185, 129, 0.25);
+    }
+
+    /* Light Gray Segment: Current Week */
+    .bar-light-gray {
+      background-color: var(--color-gray-light);
+      border-top: 1px solid #94a3b8;
+      border-bottom: 1px solid #94a3b8;
+    }
+    .wk-bar-segment.bar-light-gray:not(.merge-left) {
+      border-left: 1px solid #94a3b8;
+    }
+    .wk-bar-segment.bar-light-gray:not(.merge-right) {
+      border-right: 1px solid #94a3b8;
+    }
+
+    /* Dark Gray Segment: Future Week */
+    .bar-dark-gray {
+      background-color: var(--color-gray-dark);
+    }
+
+    /* Orange Segment: Lag / Gap */
+    .bar-orange {
+      background-color: var(--color-orange);
+      box-shadow: 0 2px 4px rgba(249, 115, 22, 0.25);
+      animation: pulse-orange 2.5s infinite;
+    }
+
+    @keyframes pulse-orange {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.7; }
+    }
+
+    /* Modal / Popup Overlay */
+    .modal-overlay {
+      position: fixed;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background: rgba(15, 23, 42, 0.6);
+      backdrop-filter: blur(4px);
+      z-index: 100;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 16px;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.2s ease;
+    }
+
+    .modal-overlay.active {
+      opacity: 1;
+      pointer-events: auto;
+    }
+
+    .modal-card {
+      background: #ffffff;
+      border-radius: 16px;
+      width: 100%;
+      max-width: 500px;
+      padding: 24px;
+      box-shadow: 0 20px 25px -5px rgba(0,0,0,0.2);
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+      transform: translateY(10px);
+      transition: transform 0.2s ease;
+    }
+
+    .modal-overlay.active .modal-card {
+      transform: translateY(0);
+    }
+
+    .modal-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-bottom: 1px solid var(--border-color);
+      padding-bottom: 12px;
+    }
+
+    .modal-title {
+      font-size: 1.15rem;
+      font-weight: 700;
+      color: var(--text-main);
+    }
+
+    .modal-close {
+      background: none;
+      border: none;
+      font-size: 1.4rem;
+      color: var(--text-muted);
+      cursor: pointer;
+      padding: 4px;
+      line-height: 1;
+    }
+
+    .modal-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 12px;
+      font-size: 0.88rem;
+    }
+
+    .modal-item {
+      background: #f8fafc;
+      padding: 10px 12px;
+      border-radius: 8px;
+      border: 1px solid var(--border-color);
+    }
+
+    .modal-item-label {
+      color: var(--text-muted);
+      font-size: 0.75rem;
+      margin-bottom: 4px;
+    }
+
+    .modal-item-value {
+      font-weight: 600;
+      color: var(--text-main);
+    }
+
+    /* Responsive adjustments */
+    @media (max-width: 768px) {
+      body {
+        padding: 10px;
+      }
+      .app-header h1 {
+        font-size: 1.15rem;
+      }
+      .header-stats {
+        width: 100%;
+        justify-content: space-between;
+      }
+      .stat-pill {
+        flex: 1;
+        justify-content: center;
+      }
+      .table-container {
+        max-height: calc(100vh - 290px);
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Header Banner -->
+  <header class="app-header">
+    <h1>
+      <span>WIIN AAR 門市人員任務與週進度追蹤表</span>
+      <span class="badge">互動式報表</span>
+    </h1>
+    <div class="header-stats">
+      <div class="stat-pill">經銷門市: <strong id="stat-stores">0</strong> 家</div>
+      <div class="stat-pill">追蹤人員: <strong id="stat-people">0</strong> 人</div>
+      <div class="stat-pill">平均週完成: <strong id="stat-avg-wk">0</strong> / 10 週</div>
+    </div>
+  </header>
+
+  <!-- Controls & Legend Panel -->
+  <section class="control-panel">
+    <div class="controls-row">
+      <div class="search-group">
+        <input type="text" id="search-input" class="search-input" placeholder="🔍 搜尋經銷商、門市或人員姓名..." oninput="renderTable()">
+        <select id="filter-store" class="select-input" onchange="renderTable()">
+          <option value="">所有門市</option>
+        </select>
+        <select id="filter-status" class="select-input" onchange="renderTable()">
+          <option value="">所有人員狀態</option>
+          <option value="gap">包含「進度落差」者</option>
+          <option value="completed">前10週 100% 已完成</option>
+        </select>
+      </div>
+    </div>
+
+    <!-- Legend Explanation -->
+    <div class="legend-container">
+      <span class="legend-title">圖例說明：</span>
+      
+      <div class="legend-item" title="填寫狀態">
+        <span class="legend-dot green"></span>
+        <span>🟢 已完成 / 已填寫</span>
+      </div>
+      <div class="legend-item" title="填寫狀態">
+        <span class="legend-dot red"></span>
+        <span>🔴 未填寫 (空值)</span>
+      </div>
+      
+      <span style="color: #cbd5e1; margin: 0 4px;">|</span>
+      
+      <div class="legend-item" title="H~T欄 進度條">
+        <span class="legend-bar-sample green"></span>
+        <span>目前已完成 (Y / GY)</span>
+      </div>
+      <div class="legend-item" title="H~T欄 進度條">
+        <span class="legend-bar-sample light-gray"></span>
+        <span>當週應完成 (G)</span>
+      </div>
+      <div class="legend-item" title="H~T欄 進度條">
+        <span class="legend-bar-sample dark-gray"></span>
+        <span>未來應完成 (X)</span>
+      </div>
+      <div class="legend-item" title="H~T欄 進度條">
+        <span class="legend-bar-sample orange"></span>
+        <span>進度落差 (空值)</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- Scrollable Frozen Table Container -->
+  <main class="table-container">
+    <table id="main-table">
+      <thead>
+        <!-- Header Row 1 -->
+        <tr>
+          <th class="col-dealer">經銷商</th>
+          <th class="col-store">門市</th>
+          <th class="col-name">姓名</th>
+          <th>Sales<br>Coach</th>
+          <th>WWDC26<br>OS 預覽</th>
+          <th>Ignite<br>每月任務</th>
+          <th>Ignite 系列<br>基本知識</th>
+          <th colspan="13" class="mypal-header">MyPal 原廠報表 08/07 (週進度追蹤)</th>
+          <th>MyPal<br>自行回報</th>
+          <th>更新<br>個人資料</th>
+        </tr>
+        <!-- Header Row 2 -->
+        <tr>
+          <th class="col-dealer"></th>
+          <th class="col-store"></th>
+          <th class="col-name"></th>
+          <th class="sub-header-label">7月成績</th>
+          <th></th>
+          <th class="sub-header-label">八月</th>
+          <th class="sub-header-label">限時測驗</th>
+          <th>WK1</th><th>WK2</th><th>WK3</th><th>WK4</th><th>WK5</th>
+          <th>WK6</th><th>WK7</th><th>WK8</th><th>WK9</th><th>WK10</th>
+          <th>WK11</th><th>WK12</th><th>WK13</th>
+          <th class="sub-header-label">08/09 前</th>
+          <!-- Link Icon Button directly underneath "更新個人資料" header -->
+          <th style="padding: 4px;">
+            <a href="https://reurl.cc/dOW9gz" target="_blank" rel="noopener noreferrer" 
+               class="header-link-btn" title="🔗 點擊開啟：更新個人資料網頁">
+              <svg class="link-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 2 0 0 1-2-2V8a2 2 2 0 0 1 2-2h6"></path>
+                <polyline points="15 3 21 3 21 9"></polyline>
+                <line x1="10" y1="14" x2="21" y2="3"></line>
+              </svg>
+              <span>連結</span>
+            </a>
+          </th>
+        </tr>
+      </thead>
+      <tbody id="table-body">
+        <!-- JS Dynamic Rows -->
+      </tbody>
+    </table>
+  </main>
+
+  <!-- Detail Modal -->
+  <div class="modal-overlay" id="detail-modal" onclick="closeModal(event)">
+    <div class="modal-card" onclick="event.stopPropagation()">
+      <div class="modal-header">
+        <h3 class="modal-title" id="modal-person-name">人員詳細資訊</h3>
+        <button class="modal-close" onclick="closeModal()">✕</button>
+      </div>
+      <div class="modal-grid" id="modal-content">
+        <!-- JS Dynamic Modal Content -->
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // Embedded Complete Dataset from Updated CSV
+    const rawData = [
+      { id: 1, dealer: "旗冠科技股份有限公司", store: "THE LAB@微風南京", name: "許宥然", d: "", e: "", f: "", g: "", wk: ["Y","Y","Y","Y","Y","Y","Y","Y","Y","","G","X","X"], u: "9", v: "" },
+      { id: 2, dealer: "旗冠科技股份有限公司", store: "THE LAB@微風南京", name: "許至權", d: "V", e: "V", f: "V", g: "", wk: ["Y","Y","Y","Y","Y","Y","","","","","G","X","X"], u: "6", v: "" },
+      { id: 3, dealer: "旗冠科技股份有限公司", store: "THE LAB@微風南京", name: "AllyLin", d: "V", e: "V", f: "V", g: "", wk: ["Y","Y","Y","Y","Y","Y","","","","","G","X","X"], u: "6", v: "" },
+      { id: 4, dealer: "旗冠科技股份有限公司", store: "THE LAB@微風南京", name: "彭敬恒", d: "V", e: "V", f: "V", g: "", wk: ["Y","Y","Y","Y","Y","Y","Y","","","","G","X","X"], u: "", v: "" },
+      { id: 5, dealer: "旗冠科技股份有限公司", store: "THE LAB@微風南京", name: "WuWeiCheng", d: "V", e: "V", f: "V", g: "", wk: ["Y","Y","Y","Y","Y","Y","","","","","G","X","X"], u: "6", v: "" }
+    ];
+
+    // Initialize Store Filter Dropdown
+    function initStoreFilter() {
+      const stores = Array.from(new Set(rawData.map(item => item.store)));
+      const select = document.getElementById('filter-store');
+      stores.forEach(s => {
+        const opt = document.createElement('option');
+        opt.value = s;
+        opt.textContent = s;
+        select.appendChild(opt);
+      });
+    }
+
+    // Helper: Check non H~T Light Indicator status
+    function getLightHtml(val, isNumericCol = false) {
+      if (val && val.trim() !== '') {
+        if (isNumericCol) {
+          return `<span class="light-indicator light-green" title="已填寫: ${val}">
+                    <span class="dot"></span>
+                    <span class="label">${val}</span>
+                  </span>`;
+        } else {
+          return `<span class="light-indicator pure-dot light-green" title="已完成 / 已填寫">
+                    <span class="dot"></span>
+                  </span>`;
+        }
+      } else {
+        return `<span class="light-indicator pure-dot light-red" title="未填寫">
+                  <span class="dot"></span>
+                </span>`;
+      }
+    }
+
+    // Classify week segment status type
+    function getSegmentType(val, wkIndex) {
+      const v = (val || '').trim().toUpperCase();
+      if (v === 'Y' || v === 'GY' || v === 'V') return 'green';
+      if (v === 'G') return 'light-gray';
+      if (v === 'X' || wkIndex >= 11) return 'dark-gray';
+      return 'orange';
+    }
+
+    // Build Continuous Seamless Week Progress Cells for a row
+    function renderWkCells(wkArray) {
+      const types = wkArray.map((val, idx) => getSegmentType(val, idx));
+      
+      return wkArray.map((val, idx) => {
+        const currentType = types[idx];
+        const isPrevSame = idx > 0 && types[idx - 1] === currentType;
+        const isNextSame = idx < types.length - 1 && types[idx + 1] === currentType;
+
+        let segClass = 'bar-' + currentType;
+        if (isPrevSame) segClass += ' merge-left';
+        if (isNextSame) segClass += ' merge-right';
+
+        let cellClass = 'wk-cell';
+        if (isNextSame) cellClass += ' merge-border-right';
+
+        let titleStr = '';
+        if (currentType === 'green') titleStr = `WK${idx + 1}: 已完成`;
+        else if (currentType === 'light-gray') titleStr = `WK${idx + 1}: 當週應完成 (G)`;
+        else if (currentType === 'dark-gray') titleStr = `WK${idx + 1}: 未來應完成`;
+        else titleStr = `WK${idx + 1}: 進度落差 (未完成)`;
+
+        return `<td class="${cellClass}">
+                  <div class="wk-bar-segment ${segClass}" title="${titleStr}"></div>
+                </td>`;
+      }).join('');
+    }
+
+    // Check if person has lag/gap in WK1..WK10 (before current week G)
+    function hasLag(item) {
+      const currentWkIdx = item.wk.indexOf('G');
+      const limit = currentWkIdx !== -1 ? currentWkIdx : 10;
+      for (let i = 0; i < limit; i++) {
+        const val = (item.wk[i] || '').trim();
+        if (val !== 'Y' && val !== 'GY' && val !== 'V') {
+          return true;
+        }
+      }
+      return false;
+    }
+
+    // Main Table Render Function
+    function renderTable() {
+      const searchVal = document.getElementById('search-input').value.trim().toLowerCase();
+      const selectedStore = document.getElementById('filter-store').value;
+      const selectedStatus = document.getElementById('filter-status').value;
+
+      const tbody = document.getElementById('table-body');
+      tbody.innerHTML = '';
+
+      let filtered = rawData.filter(item => {
+        const matchSearch = !searchVal || 
+          item.dealer.toLowerCase().includes(searchVal) ||
+          item.store.toLowerCase().includes(searchVal) ||
+          item.name.toLowerCase().includes(searchVal);
+
+        const matchStore = !selectedStore || item.store === selectedStore;
+
+        let matchStatus = true;
+        if (selectedStatus === 'gap') {
+          matchStatus = hasLag(item);
+        } else if (selectedStatus === 'completed') {
+          matchStatus = !hasLag(item);
+        }
+
+        return matchSearch && matchStore && matchStatus;
+      });
+
+      // Update Stats
+      const uniqueStores = new Set(filtered.map(i => i.store)).size;
+      document.getElementById('stat-stores').textContent = uniqueStores;
+      document.getElementById('stat-people').textContent = filtered.length;
+
+      let totalY = 0;
+      filtered.forEach(item => {
+        const yCount = item.wk.slice(0, 10).filter(w => ['Y','GY','V'].includes((w||'').trim())).length;
+        totalY += yCount;
+      });
+      const avgY = filtered.length ? (totalY / filtered.length).toFixed(1) : '0';
+      document.getElementById('stat-avg-wk').textContent = avgY;
+
+      // Render Rows
+      filtered.forEach(item => {
+        const tr = document.createElement('tr');
+        tr.onclick = () => openModal(item);
+
+        const wkCellsHtml = renderWkCells(item.wk);
+
+        tr.innerHTML = `
+          <td class="col-dealer"><span class="text-ellipsis" title="${item.dealer}">${item.dealer}</span></td>
+          <td class="col-store"><span class="text-ellipsis" title="${item.store}">${item.store}</span></td>
+          <td class="col-name"><strong style="color:#0f172a;">${item.name}</strong></td>
+          <td>${getLightHtml(item.d, false)}</td>
+          <td>${getLightHtml(item.e, false)}</td>
+          <td>${getLightHtml(item.f, false)}</td>
+          <td>${getLightHtml(item.g, false)}</td>
+          ${wkCellsHtml}
+          <td>${getLightHtml(item.u, true)}</td>
+          <td>${getLightHtml(item.v, false)}</td>
+        `;
+
+        tbody.appendChild(tr);
+      });
+    }
+
+    // Modal Control
+    function openModal(item) {
+      document.getElementById('modal-person-name').textContent = `${item.name} (${item.store})`;
+      
+      const yCount = item.wk.filter(w => ['Y','GY','V'].includes((w||'').trim())).length;
+      
+      const content = document.getElementById('modal-content');
+      content.innerHTML = `
+        <div class="modal-item">
+          <div class="modal-item-label">經銷商</div>
+          <div class="modal-item-value">${item.dealer}</div>
+        </div>
+        <div class="modal-item">
+          <div class="modal-item-label">門市</div>
+          <div class="modal-item-value">${item.store}</div>
+        </div>
+        <div class="modal-item">
+          <div class="modal-item-label">Sales Coach (7月成績)</div>
+          <div class="modal-item-value">${item.d ? '🟢 已完成' : '🔴 未填寫'}</div>
+        </div>
+        <div class="modal-item">
+          <div class="modal-item-label">WWDC26 OS 預覽</div>
+          <div class="modal-item-value">${item.e ? '🟢 已完成' : '🔴 未填寫'}</div>
+        </div>
+        <div class="modal-item">
+          <div class="modal-item-label">Ignite 每月任務 八月</div>
+          <div class="modal-item-value">${item.f ? '🟢 已完成' : '🔴 未填寫'}</div>
+        </div>
+        <div class="modal-item">
+          <div class="modal-item-label">Ignite 系列 基本知識</div>
+          <div class="modal-item-value">${item.g ? '🟢 已完成' : '🔴 未填寫'}</div>
+        </div>
+        <div class="modal-item">
+          <div class="modal-item-label">MyPal 自行回報 (08/09前)</div>
+          <div class="modal-item-value">${item.u ? '🟢 ' + item.u : '🔴 未填寫'}</div>
+        </div>
+        <div class="modal-item">
+          <div class="modal-item-label">更新個人資料</div>
+          <div class="modal-item-value" style="display:flex; align-items:center; gap:8px;">
+            ${item.v ? '🟢 已完成' : '🔴 未填寫'}
+            <a href="https://reurl.cc/dOW9gz" target="_blank" rel="noopener noreferrer" style="color:#2563eb; font-size:0.8rem; font-weight:500;">(開啟網頁)</a>
+          </div>
+        </div>
+        <div class="modal-item" style="grid-column: span 2;">
+          <div class="modal-item-label">MyPal 原廠報表 (周進度完成數)</div>
+          <div class="modal-item-value" style="color:#10b981; font-size:1.1rem;">
+            已完成 ${yCount} / 13 週 (含當週目標)
+          </div>
+        </div>
+      `;
+
+      document.getElementById('detail-modal').classList.add('active');
+    }
+
+    function closeModal(e) {
+      if (e) e.stopPropagation();
+      document.getElementById('detail-modal').classList.remove('active');
+    }
+
+    // On Page Load
+    window.addEventListener('DOMContentLoaded', () => {
+      initStoreFilter();
+      renderTable();
+    });
+  </script>
+</body>
+</html>
