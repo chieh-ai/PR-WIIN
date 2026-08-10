@@ -187,6 +187,7 @@
     }
     
     .legend-dot.green { background: var(--color-green); box-shadow: 0 0 6px var(--color-green-glow); }
+    .legend-dot.orange { background: var(--color-orange); box-shadow: 0 0 6px rgba(249, 115, 22, 0.4); }
     .legend-dot.red { background: var(--color-red); box-shadow: 0 0 6px var(--color-red-glow); }
     
     .legend-bar-sample {
@@ -397,6 +398,16 @@
     .light-red .dot {
       background-color: var(--color-red);
       box-shadow: 0 0 6px var(--color-red-glow);
+    }
+
+    .light-orange {
+      background-color: var(--color-orange-light);
+      color: #c2410c;
+      border: 1px solid rgba(249, 115, 22, 0.35);
+    }
+    .light-orange .dot {
+      background-color: var(--color-orange);
+      box-shadow: 0 0 8px rgba(249, 115, 22, 0.4);
     }
 
     /* External Web Link Icon Button in Header Row 2 */
@@ -811,7 +822,11 @@
       
       <div class="legend-item" title="填寫狀態">
         <span class="legend-dot green"></span>
-        <span>🟢 已完成 / 已填寫</span>
+        <span>🟢 已完成 / 已達標</span>
+      </div>
+      <div class="legend-item" title="填寫狀態">
+        <span class="legend-dot orange"></span>
+        <span>🟠 低於當週進度 (落差)</span>
       </div>
       <div class="legend-item" title="填寫狀態">
         <span class="legend-dot red"></span>
@@ -926,10 +941,17 @@
     }
 
     // Helper: Check non H~T Light Indicator status
-    function getLightHtml(val, isNumericCol = false) {
+    function getLightHtml(val, isNumericCol = false, targetWk = 11) {
       if (val && val.trim() !== '') {
         if (isNumericCol) {
-          return `<span class="light-indicator light-green" title="已填寫: ${val}">
+          const numVal = parseInt(val, 10);
+          if (!isNaN(numVal) && numVal < targetWk) {
+            return `<span class="light-indicator light-orange" title="進度落差: ${val} (低於當週 WK${targetWk})">
+                      <span class="dot"></span>
+                      <span class="label">${val}</span>
+                    </span>`;
+          }
+          return `<span class="light-indicator light-green" title="已達標: ${val}">
                     <span class="dot"></span>
                     <span class="label">${val}</span>
                   </span>`;
@@ -1040,6 +1062,9 @@
         const tr = document.createElement('tr');
         tr.onclick = () => openModal(item);
 
+        const gIndex = item.wk ? item.wk.indexOf('G') : -1;
+        const targetWk = gIndex !== -1 ? (gIndex + 1) : 11;
+
         const wkCellsHtml = renderWkCells(item.wk);
 
         tr.innerHTML = `
@@ -1051,7 +1076,7 @@
           <td>${getLightHtml(item.f, false)}</td>
           <td>${getLightHtml(item.g, false)}</td>
           ${wkCellsHtml}
-          <td>${getLightHtml(item.u, true)}</td>
+          <td>${getLightHtml(item.u, true, targetWk)}</td>
           <td>${getLightHtml(item.v, false)}</td>
         `;
 
@@ -1065,6 +1090,19 @@
       
       const yCount = item.wk.filter(w => ['Y','GY','V'].includes((w||'').trim())).length;
       
+      const gIndex = item.wk ? item.wk.indexOf('G') : -1;
+      const targetWk = gIndex !== -1 ? (gIndex + 1) : 11;
+
+      let uStatusHtml = '🔴 未填寫';
+      if (item.u && item.u.trim() !== '') {
+        const uNum = parseInt(item.u, 10);
+        if (!isNaN(uNum) && uNum < targetWk) {
+          uStatusHtml = `<span style="color:#ea580c; font-weight:600;">🟠 ${item.u} (低於當週目標 WK${targetWk})</span>`;
+        } else {
+          uStatusHtml = `<span style="color:#059669; font-weight:600;">🟢 ${item.u} (已達標)</span>`;
+        }
+      }
+
       const content = document.getElementById('modal-content');
       content.innerHTML = `
         <div class="modal-item">
@@ -1093,7 +1131,7 @@
         </div>
         <div class="modal-item">
           <div class="modal-item-label">MyPal 自行回報 (08/09前)</div>
-          <div class="modal-item-value">${item.u ? '🟢 ' + item.u : '🔴 未填寫'}</div>
+          <div class="modal-item-value">${uStatusHtml}</div>
         </div>
         <div class="modal-item">
           <div class="modal-item-label">更新個人資料</div>
