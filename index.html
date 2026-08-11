@@ -961,7 +961,7 @@
                   </span>`;
         }
       } else {
-        return `<span class="light-indicator pure-dot light-red" title="未填寫">
+        return `<span class="light-indicator pure-dot light-red" title="未完成">
                   <span class="dot"></span>
                 </span>`;
       }
@@ -1093,7 +1093,7 @@
       const gIndex = item.wk ? item.wk.indexOf('G') : -1;
       const targetWk = gIndex !== -1 ? (gIndex + 1) : 11;
 
-      let uStatusHtml = '🔴 未填寫';
+      let uStatusHtml = '🔴 未完成';
       if (item.u && item.u.trim() !== '') {
         const uNum = parseInt(item.u, 10);
         if (!isNaN(uNum) && uNum < targetWk) {
@@ -1115,19 +1115,19 @@
         </div>
         <div class="modal-item">
           <div class="modal-item-label">Sales Coach (7月成績)</div>
-          <div class="modal-item-value">${item.d ? '🟢 已完成' : '🔴 未填寫'}</div>
+          <div class="modal-item-value">${item.d ? '🟢 已完成' : '🔴 未完成'}</div>
         </div>
         <div class="modal-item">
           <div class="modal-item-label">WWDC26 OS 預覽</div>
-          <div class="modal-item-value">${item.e ? '🟢 已完成' : '🔴 未填寫'}</div>
+          <div class="modal-item-value">${item.e ? '🟢 已完成' : '🔴 未完成'}</div>
         </div>
         <div class="modal-item">
           <div class="modal-item-label">Ignite 每月任務 八月</div>
-          <div class="modal-item-value">${item.f ? '🟢 已完成' : '🔴 未填寫'}</div>
+          <div class="modal-item-value">${item.f ? '🟢 已完成' : '🔴 未完成'}</div>
         </div>
         <div class="modal-item">
           <div class="modal-item-label">Ignite 系列 基本知識</div>
-          <div class="modal-item-value">${item.g ? '🟢 已完成' : '🔴 未填寫'}</div>
+          <div class="modal-item-value">${item.g ? '🟢 已完成' : '🔴 未完成'}</div>
         </div>
         <div class="modal-item">
           <div class="modal-item-label">MyPal 自行回報 (08/10前)</div>
@@ -1136,7 +1136,7 @@
         <div class="modal-item">
           <div class="modal-item-label">更新個人資料</div>
           <div class="modal-item-value" style="display:flex; align-items:center; gap:8px;">
-            ${item.v ? '🟢 已完成' : '🔴 未填寫'}
+            ${item.v ? '🟢 已完成' : '🔴 未完成'}
             <a href="https://reurl.cc/dOW9gz" target="_blank" rel="noopener noreferrer" style="color:#2563eb; font-size:0.8rem; font-weight:500;">(開啟網頁)</a>
           </div>
         </div>
