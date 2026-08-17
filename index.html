@@ -793,7 +793,7 @@
       <div class="header-stats">
         <div class="stat-pill">經銷門市: <strong id="stat-stores">0</strong> 家</div>
         <div class="stat-pill">追蹤人員: <strong id="stat-people">0</strong> 人</div>
-        <div class="stat-pill">平均週完成: <strong id="stat-avg-wk">0</strong> / 10 週</div>
+        <div class="stat-pill">平均週完成: <strong id="stat-avg-wk">0</strong> / <span id="stat-target-wk">11</span> 週</div>
         <button class="logout-btn" onclick="handleLogout()" title="登出系統">
           <span>🔒 登出</span>
         </button>
@@ -811,7 +811,7 @@
         <select id="filter-status" class="select-input" onchange="renderTable()">
           <option value="">所有人員狀態</option>
           <option value="gap">包含「進度落差」者</option>
-          <option value="completed">前10週 100% 已完成</option>
+          <option value="completed">當週以前 100% 已完成</option>
         </select>
       </div>
     </div>
@@ -921,11 +921,11 @@
   <script>
     // Embedded Complete Dataset from Updated CSV
     const rawData = [
-      { id: 1, dealer: "旗冠科技股份有限公司", store: "THE LAB@微風南京", name: "許宥然", d: "", e: "", f: "", g: "", wk: ["Y","Y","Y","Y","Y","Y","Y","Y","Y","","G","X","X"], u: "9", v: "V" },
-      { id: 2, dealer: "旗冠科技股份有限公司", store: "THE LAB@微風南京", name: "許至權", d: "V", e: "V", f: "V", g: "", wk: ["Y","Y","Y","Y","Y","Y","","","","","G","X","X"], u: "6", v: "V" },
-      { id: 3, dealer: "旗冠科技股份有限公司", store: "THE LAB@微風南京", name: "林若蓁", d: "V", e: "V", f: "V", g: "V", wk: ["Y","Y","Y","Y","Y","Y","Y","Y","Y","Y","G","X","X"], u: "11", v: "V" },
-      { id: 4, dealer: "旗冠科技股份有限公司", store: "THE LAB@微風南京", name: "彭敬恒", d: "V", e: "V", f: "V", g: "", wk: ["Y","Y","Y","Y","Y","Y","Y","Y","Y","Y","G","X","X"], u: "", v: "V" },
-      { id: 5, dealer: "旗冠科技股份有限公司", store: "THE LAB@微風南京", name: "WuWeiCheng", d: "V", e: "V", f: "V", g: "", wk: ["Y","Y","Y","Y","Y","Y","Y","Y","Y","","G","X","X"], u: "6", v: "" }
+      { id: 1, dealer: "旗冠科技股份有限公司", store: "THE LAB@微風南京", name: "許宥然", d: "V", e: "V", f: "V", g: "V", wk: ["Y","Y","Y","Y","Y","Y","Y","Y","Y","","","G","X"], u: "11", v: "V" },
+      { id: 2, dealer: "旗冠科技股份有限公司", store: "THE LAB@微風南京", name: "許至權", d: "V", e: "V", f: "V", g: "", wk: ["Y","Y","Y","Y","Y","Y","","","","","","G","X"], u: "6", v: "V" },
+      { id: 3, dealer: "旗冠科技股份有限公司", store: "THE LAB@微風南京", name: "林若蓁", d: "V", e: "V", f: "V", g: "V", wk: ["Y","Y","Y","Y","Y","Y","Y","Y","Y","Y","","G","X"], u: "11", v: "V" },
+      { id: 4, dealer: "旗冠科技股份有限公司", store: "THE LAB@微風南京", name: "彭敬恒", d: "V", e: "V", f: "V", g: "", wk: ["Y","Y","Y","Y","Y","Y","Y","Y","Y","Y","","G","X"], u: "", v: "V" },
+      { id: 5, dealer: "旗冠科技股份有限公司", store: "THE LAB@微風南京", name: "WuWeiCheng", d: "V", e: "V", f: "V", g: "", wk: ["Y","Y","Y","Y","Y","Y","Y","Y","Y","","","G","X"], u: "6", v: "" }
     ];
 
     // Initialize Store Filter Dropdown
@@ -968,17 +968,19 @@
     }
 
     // Classify week segment status type
-    function getSegmentType(val, wkIndex) {
+    function getSegmentType(val, wkIndex, gIndex = -1) {
       const v = (val || '').trim().toUpperCase();
       if (v === 'Y' || v === 'GY' || v === 'V') return 'green';
       if (v === 'G') return 'light-gray';
-      if (v === 'X' || wkIndex >= 11) return 'dark-gray';
+      if (v === 'X') return 'dark-gray';
+      if (gIndex !== -1 && wkIndex > gIndex) return 'dark-gray';
       return 'orange';
     }
 
     // Build Continuous Seamless Week Progress Cells for a row
     function renderWkCells(wkArray) {
-      const types = wkArray.map((val, idx) => getSegmentType(val, idx));
+      const gIndex = wkArray.indexOf('G');
+      const types = wkArray.map((val, idx) => getSegmentType(val, idx, gIndex));
       
       return wkArray.map((val, idx) => {
         const currentType = types[idx];
@@ -1050,12 +1052,18 @@
       document.getElementById('stat-people').textContent = filtered.length;
 
       let totalY = 0;
+      let limitWk = 11;
       filtered.forEach(item => {
-        const yCount = item.wk.slice(0, 10).filter(w => ['Y','GY','V'].includes((w||'').trim())).length;
+        const gIdx = item.wk.indexOf('G');
+        const limit = gIdx !== -1 ? gIdx : 11;
+        limitWk = limit;
+        const yCount = item.wk.slice(0, limit).filter(w => ['Y','GY','V'].includes((w||'').trim())).length;
         totalY += yCount;
       });
       const avgY = filtered.length ? (totalY / filtered.length).toFixed(1) : '0';
       document.getElementById('stat-avg-wk').textContent = avgY;
+      const targetWkElem = document.getElementById('stat-target-wk');
+      if (targetWkElem) targetWkElem.textContent = limitWk;
 
       // Render Rows
       filtered.forEach(item => {
