@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <title>WIIN AAR 門市人員任務與週進度追蹤表</title>
+  <title>WIIN AAR 門市人員任務追蹤表</title>
   <!-- Google Fonts: Inter & Noto Sans TC -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -745,23 +745,24 @@
 
     /* Logout Button */
     .logout-btn {
-      background: rgba(255, 255, 255, 0.15);
-      border: 1px solid rgba(255, 255, 255, 0.25);
-      color: #ffffff;
-      padding: 6px 14px;
-      border-radius: 10px;
-      font-size: 0.82rem;
-      font-weight: 500;
+      background: rgba(239, 68, 68, 0.2);
+      border: 1px solid rgba(239, 68, 68, 0.4);
+      color: #fca5a5;
+      padding: 6px 12px;
+      border-radius: 8px;
+      font-size: 0.8rem;
+      font-weight: 600;
       cursor: pointer;
-      transition: all 0.2s;
+      transition: all 0.2s ease;
       display: flex;
       align-items: center;
       gap: 6px;
     }
 
     .logout-btn:hover {
-      background: rgba(239, 68, 68, 0.85);
-      border-color: #ef4444;
+      background: rgba(239, 68, 68, 0.35);
+      border-color: rgba(239, 68, 68, 0.6);
+      color: #ffffff;
     }
   </style>
 </head>
@@ -773,7 +774,7 @@
       <div class="login-icon">🔒</div>
       <div>
         <h2 class="login-title">系統密碼驗證</h2>
-        <p class="login-subtitle">WIIN AAR 門市人員任務與週進度追蹤表</p>
+        <p class="login-subtitle">WIIN AAR 門市人員任務追蹤表</p>
       </div>
       <form class="login-form" onsubmit="handleLogin(event)">
         <input type="password" id="login-password" class="login-input" placeholder="請輸入存取密碼..." autocomplete="current-password" required>
@@ -788,16 +789,15 @@
     <!-- Header Banner -->
     <header class="app-header">
       <h1>
-        <span>WIIN AAR 門市人員任務與週進度追蹤表</span>
-        <span class="badge">互動式報表</span>
+        <span>WIIN AAR 門市人員任務追蹤表</span>
+        <span class="badge">9月份報表</span>
       </h1>
       <div class="header-stats">
         <div class="stat-pill">經銷門市: <strong id="stat-stores">0</strong> 家</div>
         <div class="stat-pill">追蹤人員: <strong id="stat-people">0</strong> 人</div>
-        <div class="stat-pill">任務總達成率: <strong id="stat-completion-rate">0%</strong></div>
-        <button class="logout-btn" onclick="handleLogout()" title="登出系統">
-          <span>🔒 登出</span>
-        </button>
+        <div class="stat-pill">基礎任務達標: <strong id="stat-tasks-done">0</strong> 人</div>
+        <div class="stat-pill">個資更新: <strong id="stat-profile">0</strong> 人</div>
+        <button class="logout-btn" onclick="handleLogout()" title="登出並鎖定系統">🔒 登出</button>
       </div>
     </header>
 
@@ -811,8 +811,9 @@
         </select>
         <select id="filter-status" class="select-input" onchange="renderTable()">
           <option value="">所有人員狀態</option>
-          <option value="gap">包含「未完成任務」者</option>
-          <option value="completed">所有任務 100% 已完成</option>
+          <option value="base-done">前4項全達標者</option>
+          <option value="base-pending">前4項有未完成者</option>
+          <option value="profile-pending">個資未更新者</option>
         </select>
       </div>
     </div>
@@ -821,13 +822,13 @@
     <div class="legend-container">
       <span class="legend-title">圖例說明：</span>
       
-      <div class="legend-item" title="填寫狀態">
+      <div class="legend-item" title="已完成">
         <span class="legend-dot green"></span>
-        <span>已完成｜已達標</span>
+        <span>已完成</span>
       </div>
-      <div class="legend-item" title="填寫狀態">
+      <div class="legend-item" title="未完成">
         <span class="legend-dot red"></span>
-        <span>未完成｜未回報</span>
+        <span>未完成</span>
       </div>
     </div>
   </section>
@@ -935,14 +936,33 @@
       }
     }
 
-    // Check if person has incomplete tasks
-    function hasIncomplete(item) {
-      return !item.profile || !item.salesCoach || !item.igniteMonthly || !item.guideSelection || !item.mypal1 || !item.mypal2;
+    // Check if person's first 4 base tasks are done
+    function isBaseTasksDone(item) {
+      const p = item.profile && item.profile.trim().toUpperCase() === 'V';
+      const sc = item.salesCoach && item.salesCoach.trim().toUpperCase() === 'V';
+      const ig = item.igniteMonthly && item.igniteMonthly.trim().toUpperCase() === 'V';
+      const gd = item.guideSelection && item.guideSelection.trim().toUpperCase() === 'V';
+      return !!(p && sc && ig && gd);
     }
 
-    // Check if person has completed all tasks
-    function isAllCompleted(item) {
-      return !!(item.profile && item.salesCoach && item.igniteMonthly && item.guideSelection && item.mypal1 && item.mypal2);
+    // Check if person's profile is updated
+    function isProfileDone(item) {
+      return !!(item.profile && item.profile.trim().toUpperCase() === 'V');
+    }
+
+    // Initialize Status Filter Dropdown with counts
+    function initStatusFilter() {
+      const baseDoneCount = rawData.filter(isBaseTasksDone).length;
+      const basePendingCount = rawData.length - baseDoneCount;
+      const profilePendingCount = rawData.filter(i => !isProfileDone(i)).length;
+
+      const select = document.getElementById('filter-status');
+      select.innerHTML = `
+        <option value="">所有人員狀態</option>
+        <option value="base-done">前4項全達標者 (${baseDoneCount}人)</option>
+        <option value="base-pending">前4項有未完成者 (${basePendingCount}人)</option>
+        <option value="profile-pending">個資未更新者 (${profilePendingCount}人)</option>
+      `;
     }
 
     // Main Table Render Function
@@ -963,10 +983,15 @@
         const matchStore = !selectedStore || item.store === selectedStore;
 
         let matchStatus = true;
-        if (selectedStatus === 'gap') {
-          matchStatus = hasIncomplete(item);
-        } else if (selectedStatus === 'completed') {
-          matchStatus = isAllCompleted(item);
+        const baseDone = isBaseTasksDone(item);
+        const profileDone = isProfileDone(item);
+
+        if (selectedStatus === 'base-done') {
+          matchStatus = baseDone;
+        } else if (selectedStatus === 'base-pending') {
+          matchStatus = !baseDone;
+        } else if (selectedStatus === 'profile-pending') {
+          matchStatus = !profileDone;
         }
 
         return matchSearch && matchStore && matchStatus;
@@ -977,18 +1002,11 @@
       document.getElementById('stat-stores').textContent = uniqueStores;
       document.getElementById('stat-people').textContent = filtered.length;
 
-      let completedTasks = 0;
-      const totalTasks = filtered.length * 6;
-      filtered.forEach(item => {
-        if (item.profile) completedTasks++;
-        if (item.salesCoach) completedTasks++;
-        if (item.igniteMonthly) completedTasks++;
-        if (item.guideSelection) completedTasks++;
-        if (item.mypal1) completedTasks++;
-        if (item.mypal2) completedTasks++;
-      });
-      const rate = totalTasks > 0 ? ((completedTasks / totalTasks) * 100).toFixed(1) + '%' : '0%';
-      document.getElementById('stat-completion-rate').textContent = `${rate} (${completedTasks}/${totalTasks})`;
+      const tasksDoneCount = filtered.filter(isBaseTasksDone).length;
+      document.getElementById('stat-tasks-done').textContent = tasksDoneCount;
+
+      const profileDoneCount = filtered.filter(isProfileDone).length;
+      document.getElementById('stat-profile').textContent = `${profileDoneCount} / ${filtered.length}`;
 
       // Render Rows
       filtered.forEach(item => {
@@ -1083,6 +1101,7 @@
         loginOverlay.style.display = 'none';
         appContainer.classList.remove('hidden');
         initStoreFilter();
+        initStatusFilter();
         renderTable();
       } else {
         loginOverlay.style.display = 'flex';
