@@ -845,7 +845,6 @@
           <th>Sales<br>Coach</th>
           <th>Ignite<br>每月任務</th>
           <th>認識 Guide<br>選集</th>
-          <th>更新<br>個人資料</th>
           <th colspan="2" class="mypal-header">MyPal</th>
         </tr>
         <!-- Header Row 2 -->
@@ -853,10 +852,6 @@
           <th class="col-dealer"></th>
           <th class="col-store"></th>
           <th class="col-name"></th>
-          <th></th>
-          <th class="sub-header-label">八月成績</th>
-          <th class="sub-header-label">九月</th>
-          <th></th>
           <!-- Link Icon Button directly underneath "更新個人資料" header -->
           <th style="padding: 4px;">
             <a href="https://reurl.cc/dOW9gz" target="_blank" rel="noopener noreferrer" 
@@ -869,6 +864,9 @@
               <span>連結</span>
             </a>
           </th>
+          <th class="sub-header-label">八月成績</th>
+          <th class="sub-header-label">九月</th>
+          <th></th>
           <th class="sub-header-label" style="font-size:0.75rem; white-space:nowrap; padding:4px 8px;">第一階段<br>09/18 09:00 前</th>
           <th class="sub-header-label" style="font-size:0.75rem; white-space:nowrap; padding:4px 8px;">第二階段<br>09/24 23:59 前</th>
         </tr>
@@ -896,12 +894,12 @@
   <script>
     // Embedded Complete Dataset from Updated CSV (09/14 報表)
     const rawData = [
-      { id: 1, dealer: "旗冠科技股份有限公司", store: "THE LAB@微風南京", name: "許宥然", profile1: "V", salesCoach: "V", igniteMonthly: "V", guideSelection: "V", profile2: "V", mypal1: "", mypal2: "" },
-      { id: 2, dealer: "旗冠科技股份有限公司", store: "THE LAB@微風南京", name: "許至權", profile1: "V", salesCoach: "V", igniteMonthly: "V", guideSelection: "V", profile2: "V", mypal1: "", mypal2: "" },
-      { id: 3, dealer: "旗冠科技股份有限公司", store: "THE LAB@微風南京", name: "林若蓁", profile1: "V", salesCoach: "V", igniteMonthly: "V", guideSelection: "V", profile2: "V", mypal1: "", mypal2: "" },
-      { id: 4, dealer: "旗冠科技股份有限公司", store: "THE LAB@微風南京", name: "彭敬恒", profile1: "V", salesCoach: "V", igniteMonthly: "V", guideSelection: "V", profile2: "V", mypal1: "", mypal2: "" },
-      { id: 5, dealer: "旗冠科技股份有限公司", store: "THE LAB@微風南京", name: "吳偉誠", profile1: "V", salesCoach: "V", igniteMonthly: "V", guideSelection: "V", profile2: "V", mypal1: "", mypal2: "" },
-      { id: 6, dealer: "旗冠科技股份有限公司", store: "THE LAB@微風南京", name: "吳瑞芸", profile1: "V", salesCoach: "V", igniteMonthly: "V", guideSelection: "V", profile2: "V", mypal1: "", mypal2: "" }
+      { id: 1, dealer: "旗冠科技股份有限公司", store: "THE LAB@微風南京", name: "許宥然", profile: "V", salesCoach: "V", igniteMonthly: "V", guideSelection: "V", mypal1: "", mypal2: "" },
+      { id: 2, dealer: "旗冠科技股份有限公司", store: "THE LAB@微風南京", name: "許至權", profile: "V", salesCoach: "V", igniteMonthly: "V", guideSelection: "V", mypal1: "", mypal2: "" },
+      { id: 3, dealer: "旗冠科技股份有限公司", store: "THE LAB@微風南京", name: "林若蓁", profile: "V", salesCoach: "V", igniteMonthly: "V", guideSelection: "V", mypal1: "", mypal2: "" },
+      { id: 4, dealer: "旗冠科技股份有限公司", store: "THE LAB@微風南京", name: "彭敬恒", profile: "V", salesCoach: "V", igniteMonthly: "V", guideSelection: "V", mypal1: "", mypal2: "" },
+      { id: 5, dealer: "旗冠科技股份有限公司", store: "THE LAB@微風南京", name: "吳偉誠", profile: "V", salesCoach: "V", igniteMonthly: "V", guideSelection: "V", mypal1: "", mypal2: "" },
+      { id: 6, dealer: "旗冠科技股份有限公司", store: "THE LAB@微風南京", name: "吳瑞芸", profile: "V", salesCoach: "V", igniteMonthly: "V", guideSelection: "V", mypal1: "", mypal2: "" }
     ];
 
     // Initialize Store Filter Dropdown
@@ -939,12 +937,12 @@
 
     // Check if person has incomplete tasks
     function hasIncomplete(item) {
-      return !item.profile1 || !item.salesCoach || !item.igniteMonthly || !item.guideSelection || !item.profile2 || !item.mypal1 || !item.mypal2;
+      return !item.profile || !item.salesCoach || !item.igniteMonthly || !item.guideSelection || !item.mypal1 || !item.mypal2;
     }
 
     // Check if person has completed all tasks
     function isAllCompleted(item) {
-      return !!(item.profile1 && item.salesCoach && item.igniteMonthly && item.guideSelection && item.profile2 && item.mypal1 && item.mypal2);
+      return !!(item.profile && item.salesCoach && item.igniteMonthly && item.guideSelection && item.mypal1 && item.mypal2);
     }
 
     // Main Table Render Function
@@ -980,13 +978,12 @@
       document.getElementById('stat-people').textContent = filtered.length;
 
       let completedTasks = 0;
-      const totalTasks = filtered.length * 7;
+      const totalTasks = filtered.length * 6;
       filtered.forEach(item => {
-        if (item.profile1) completedTasks++;
+        if (item.profile) completedTasks++;
         if (item.salesCoach) completedTasks++;
         if (item.igniteMonthly) completedTasks++;
         if (item.guideSelection) completedTasks++;
-        if (item.profile2) completedTasks++;
         if (item.mypal1) completedTasks++;
         if (item.mypal2) completedTasks++;
       });
@@ -1002,11 +999,10 @@
           <td class="col-dealer"><span class="text-ellipsis" title="${item.dealer}">${item.dealer}</span></td>
           <td class="col-store"><span class="text-ellipsis" title="${item.store}">${item.store}</span></td>
           <td class="col-name"><strong style="color:#0f172a;">${item.name}</strong></td>
-          <td>${getLightHtml(item.profile1)}</td>
+          <td>${getLightHtml(item.profile)}</td>
           <td>${getLightHtml(item.salesCoach)}</td>
           <td>${getLightHtml(item.igniteMonthly)}</td>
           <td>${getLightHtml(item.guideSelection)}</td>
-          <td>${getLightHtml(item.profile2)}</td>
           <td>${getLightHtml(item.mypal1)}</td>
           <td>${getLightHtml(item.mypal2)}</td>
         `;
@@ -1019,7 +1015,7 @@
     function openModal(item) {
       document.getElementById('modal-person-name').textContent = `${item.name} (${item.store})`;
       
-      const tasks = [item.profile1, item.salesCoach, item.igniteMonthly, item.guideSelection, item.profile2, item.mypal1, item.mypal2];
+      const tasks = [item.profile, item.salesCoach, item.igniteMonthly, item.guideSelection, item.mypal1, item.mypal2];
       const doneCount = tasks.filter(t => !!t).length;
 
       const content = document.getElementById('modal-content');
@@ -1035,7 +1031,7 @@
         <div class="modal-item">
           <div class="modal-item-label">更新個人資料</div>
           <div class="modal-item-value" style="display:flex; align-items:center; gap:8px;">
-            ${item.profile1 ? '🟢 已完成' : '🔴 未完成'}
+            ${item.profile ? '🟢 已完成' : '🔴 未完成'}
             <a href="https://reurl.cc/dOW9gz" target="_blank" rel="noopener noreferrer" style="color:#2563eb; font-size:0.8rem; font-weight:500;">(開啟網頁)</a>
           </div>
         </div>
@@ -1052,21 +1048,17 @@
           <div class="modal-item-value">${item.guideSelection ? '🟢 已完成' : '🔴 未完成'}</div>
         </div>
         <div class="modal-item">
-          <div class="modal-item-label">更新個人資料 (確認)</div>
-          <div class="modal-item-value">${item.profile2 ? '🟢 已完成' : '🔴 未完成'}</div>
-        </div>
-        <div class="modal-item">
           <div class="modal-item-label">MyPal 第一階段 (09/18 09:00 前)</div>
           <div class="modal-item-value">${item.mypal1 ? '🟢 已完成' : '🔴 未完成'}</div>
         </div>
-        <div class="modal-item" style="grid-column: span 2;">
+        <div class="modal-item">
           <div class="modal-item-label">MyPal 第二階段 (09/24 23:59 前)</div>
           <div class="modal-item-value">${item.mypal2 ? '🟢 已完成' : '🔴 未完成'}</div>
         </div>
         <div class="modal-item" style="grid-column: span 2;">
           <div class="modal-item-label">個人任務達成進度</div>
-          <div class="modal-item-value" style="color:${doneCount === 7 ? '#10b981' : '#2563eb'}; font-size:1.1rem;">
-            已完成 ${doneCount} / 7 項任務 (${((doneCount / 7) * 100).toFixed(0)}%)
+          <div class="modal-item-value" style="color:${doneCount === 6 ? '#10b981' : '#2563eb'}; font-size:1.1rem;">
+            已完成 ${doneCount} / 6 項任務 (${((doneCount / 6) * 100).toFixed(0)}%)
           </div>
         </div>
       `;
