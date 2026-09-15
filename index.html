@@ -847,6 +847,7 @@
           <th>Ignite<br>每月任務</th>
           <th>認識 Guide<br>選集</th>
           <th colspan="3" class="mypal-header">MyPal</th>
+          <th>2026 年 9 月<br>Apple 特別活動選集</th>
         </tr>
         <!-- Header Row 2 -->
         <tr>
@@ -858,7 +859,7 @@
             <a href="https://reurl.cc/dOW9gz" target="_blank" rel="noopener noreferrer" 
                class="header-link-btn" title="🔗 點擊開啟：更新個人資料網頁">
               <svg class="link-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 2 0 0 1 2-2h6"></path>
+                <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 2 0 0 1-2-2V8a2 2 2 0 0 1 2-2h6"></path>
                 <polyline points="15 3 21 3 21 9"></polyline>
                 <line x1="10" y1="14" x2="21" y2="3"></line>
               </svg>
@@ -871,6 +872,7 @@
           <th class="sub-header-label" style="font-size:0.75rem; white-space:nowrap; padding:4px 8px;">獲得 13 週<br>完成獎勵</th>
           <th class="sub-header-label" style="font-size:0.75rem; white-space:nowrap; padding:4px 8px;">第一階段<br>09/18 09:00 前</th>
           <th class="sub-header-label" style="font-size:0.75rem; white-space:nowrap; padding:4px 8px;">第二階段<br>09/24 23:59 前</th>
+          <th class="sub-header-label" style="font-size:0.75rem; white-space:nowrap; padding:4px 8px;">09/17 23:59 前</th>
         </tr>
       </thead>
       <tbody id="table-body">
@@ -896,12 +898,12 @@
   <script>
     // Embedded Complete Dataset from Updated CSV (09/14 報表)
     const rawData = [
-      { id: 1, dealer: "旗冠科技股份有限公司", store: "THE LAB@微風南京", name: "許宥然", profile: "V", salesCoach: "V", igniteMonthly: "V", guideSelection: "V", mypalReward: "V", mypal1: "", mypal2: "" },
-      { id: 2, dealer: "旗冠科技股份有限公司", store: "THE LAB@微風南京", name: "許至權", profile: "V", salesCoach: "V", igniteMonthly: "V", guideSelection: "V", mypalReward: "V", mypal1: "", mypal2: "" },
-      { id: 3, dealer: "旗冠科技股份有限公司", store: "THE LAB@微風南京", name: "林若蓁", profile: "V", salesCoach: "V", igniteMonthly: "V", guideSelection: "V", mypalReward: "V", mypal1: "", mypal2: "" },
-      { id: 4, dealer: "旗冠科技股份有限公司", store: "THE LAB@微風南京", name: "彭敬恒", profile: "V", salesCoach: "V", igniteMonthly: "V", guideSelection: "V", mypalReward: "V", mypal1: "", mypal2: "" },
-      { id: 5, dealer: "旗冠科技股份有限公司", store: "THE LAB@微風南京", name: "吳偉誠", profile: "V", salesCoach: "V", igniteMonthly: "V", guideSelection: "V", mypalReward: "V", mypal1: "", mypal2: "" },
-      { id: 6, dealer: "旗冠科技股份有限公司", store: "THE LAB@微風南京", name: "吳瑞芸", profile: "V", salesCoach: "V", igniteMonthly: "V", guideSelection: "V", mypalReward: "", mypal1: "", mypal2: "" }
+      { id: 1, dealer: "旗冠科技股份有限公司", store: "THE LAB@微風南京", name: "許宥然", profile: "V", salesCoach: "V", igniteMonthly: "V", guideSelection: "V", mypalReward: "V", mypal1: "", mypal2: "", appleEvent: "" },
+      { id: 2, dealer: "旗冠科技股份有限公司", store: "THE LAB@微風南京", name: "許至權", profile: "V", salesCoach: "V", igniteMonthly: "V", guideSelection: "V", mypalReward: "V", mypal1: "", mypal2: "", appleEvent: "" },
+      { id: 3, dealer: "旗冠科技股份有限公司", store: "THE LAB@微風南京", name: "林若蓁", profile: "V", salesCoach: "V", igniteMonthly: "V", guideSelection: "V", mypalReward: "V", mypal1: "", mypal2: "", appleEvent: "" },
+      { id: 4, dealer: "旗冠科技股份有限公司", store: "THE LAB@微風南京", name: "彭敬恒", profile: "V", salesCoach: "V", igniteMonthly: "V", guideSelection: "V", mypalReward: "V", mypal1: "", mypal2: "", appleEvent: "" },
+      { id: 5, dealer: "旗冠科技股份有限公司", store: "THE LAB@微風南京", name: "吳偉誠", profile: "V", salesCoach: "V", igniteMonthly: "V", guideSelection: "V", mypalReward: "V", mypal1: "", mypal2: "", appleEvent: "" },
+      { id: 6, dealer: "旗冠科技股份有限公司", store: "THE LAB@微風南京", name: "吳瑞芸", profile: "V", salesCoach: "V", igniteMonthly: "V", guideSelection: "V", mypalReward: "", mypal1: "", mypal2: "", appleEvent: "" }
     ];
 
     // Initialize Store Filter Dropdown
@@ -1025,6 +1027,7 @@
           <td>${getLightHtml(item.mypalReward)}</td>
           <td>${getLightHtml(item.mypal1)}</td>
           <td>${getLightHtml(item.mypal2)}</td>
+          <td>${getLightHtml(item.appleEvent)}</td>
         `;
 
         tbody.appendChild(tr);
@@ -1035,7 +1038,7 @@
     function openModal(item) {
       document.getElementById('modal-person-name').textContent = `${item.name} (${item.store})`;
       
-      const tasks = [item.profile, item.salesCoach, item.igniteMonthly, item.guideSelection, item.mypalReward, item.mypal1, item.mypal2];
+      const tasks = [item.profile, item.salesCoach, item.igniteMonthly, item.guideSelection, item.mypalReward, item.mypal1, item.mypal2, item.appleEvent];
       const doneCount = tasks.filter(t => !!t).length;
 
       const content = document.getElementById('modal-content');
@@ -1079,10 +1082,14 @@
           <div class="modal-item-label">MyPal 第二階段 (09/24 23:59 前)</div>
           <div class="modal-item-value">${item.mypal2 ? '🟢 已完成' : '🔴 未完成'}</div>
         </div>
+        <div class="modal-item">
+          <div class="modal-item-label">2026 年 9 月 Apple 特別活動選集 (09/17 23:59 前)</div>
+          <div class="modal-item-value">${item.appleEvent ? '🟢 已完成' : '🔴 未完成'}</div>
+        </div>
         <div class="modal-item" style="grid-column: span 2;">
           <div class="modal-item-label">個人任務達成進度</div>
-          <div class="modal-item-value" style="color:${doneCount === 7 ? '#10b981' : '#2563eb'}; font-size:1.1rem;">
-            已完成 ${doneCount} / 7 項任務 (${((doneCount / 7) * 100).toFixed(0)}%)
+          <div class="modal-item-value" style="color:${doneCount === 8 ? '#10b981' : '#2563eb'}; font-size:1.1rem;">
+            已完成 ${doneCount} / 8 項任務 (${((doneCount / 8) * 100).toFixed(0)}%)
           </div>
         </div>
       `;
