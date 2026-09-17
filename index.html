@@ -795,8 +795,13 @@
       <div class="header-stats">
         <div class="stat-pill">經銷門市: <strong id="stat-stores">0</strong> 家</div>
         <div class="stat-pill">追蹤人員: <strong id="stat-people">0</strong> 人</div>
-        <div class="stat-pill">基礎任務達標: <strong id="stat-tasks-done">0</strong> 人</div>
-        <div class="stat-pill">個資更新: <strong id="stat-profile">0</strong> 人</div>
+        <div class="stat-pill" id="pill-apple">特別活動選集: <strong id="stat-apple">0</strong> 人</div>
+        <div class="stat-pill" id="pill-mypal1">MyPal一階: <strong id="stat-mypal1">0</strong> 人</div>
+        <div class="stat-pill" id="pill-mypal2">MyPal二階: <strong id="stat-mypal2">0</strong> 人</div>
+        <div class="stat-pill" id="pill-reward">13週獎勵: <strong id="stat-reward">0</strong> 人</div>
+        <div class="stat-pill" id="pill-tasks-done">基礎任務達標: <strong id="stat-tasks-done">0</strong> 人</div>
+        <div class="stat-pill" id="pill-npi">NPI直播: <strong id="stat-npi">0</strong> 人</div>
+        <div class="stat-pill" id="pill-profile">個資更新: <strong id="stat-profile">0</strong> 人</div>
         <button class="logout-btn" onclick="handleLogout()" title="登出並鎖定系統">🔒 登出</button>
       </div>
     </header>
@@ -1004,14 +1009,44 @@
 
       // Update Stats
       const uniqueStores = new Set(filtered.map(i => i.store)).size;
+      const totalFiltered = filtered.length;
       document.getElementById('stat-stores').textContent = uniqueStores;
-      document.getElementById('stat-people').textContent = filtered.length;
+      document.getElementById('stat-people').textContent = totalFiltered;
+
+      // Helper to update stat text and hide if fully completed
+      function updateStatPill(count, pillId, statId, isRatio = false) {
+        const statEl = document.getElementById(statId);
+        if (statEl) {
+          statEl.textContent = isRatio ? `${count} / ${totalFiltered}` : count;
+        }
+        const pillEl = document.getElementById(pillId);
+        if (pillEl) {
+          // 只列出未全數完成的，已全數完成的就不顯示
+          const isAllDone = totalFiltered > 0 && count >= totalFiltered;
+          pillEl.style.display = isAllDone ? 'none' : 'flex';
+        }
+      }
+
+      const appleDoneCount = filtered.filter(i => i.appleEvent && i.appleEvent.trim().toUpperCase() === 'V').length;
+      updateStatPill(appleDoneCount, 'pill-apple', 'stat-apple');
+
+      const mypal1DoneCount = filtered.filter(i => i.mypal1 && i.mypal1.trim().toUpperCase() === 'V').length;
+      updateStatPill(mypal1DoneCount, 'pill-mypal1', 'stat-mypal1');
+
+      const mypal2DoneCount = filtered.filter(i => i.mypal2 && i.mypal2.trim().toUpperCase() === 'V').length;
+      updateStatPill(mypal2DoneCount, 'pill-mypal2', 'stat-mypal2');
+
+      const rewardDoneCount = filtered.filter(i => i.mypalReward && i.mypalReward.trim().toUpperCase() === 'V').length;
+      updateStatPill(rewardDoneCount, 'pill-reward', 'stat-reward');
 
       const tasksDoneCount = filtered.filter(isBaseTasksDone).length;
-      document.getElementById('stat-tasks-done').textContent = tasksDoneCount;
+      updateStatPill(tasksDoneCount, 'pill-tasks-done', 'stat-tasks-done');
+
+      const npiDoneCount = filtered.filter(i => i.npiLive && i.npiLive.trim().toUpperCase() === 'V').length;
+      updateStatPill(npiDoneCount, 'pill-npi', 'stat-npi');
 
       const profileDoneCount = filtered.filter(isProfileDone).length;
-      document.getElementById('stat-profile').textContent = `${profileDoneCount} / ${filtered.length}`;
+      updateStatPill(profileDoneCount, 'pill-profile', 'stat-profile', true);
 
       // Render Rows
       filtered.forEach(item => {
