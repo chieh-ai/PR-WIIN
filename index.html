@@ -790,17 +790,17 @@
     <header class="app-header">
       <h1>
         <span>WIIN AAR 門市人員任務追蹤表</span>
-        <span class="badge">9月份報表</span>
+        <span class="badge">10月份報表</span>
       </h1>
       <div class="header-stats">
         <div class="stat-pill">經銷門市: <strong id="stat-stores">0</strong> 家</div>
         <div class="stat-pill">追蹤人員: <strong id="stat-people">0</strong> 人</div>
-        <div class="stat-pill" id="pill-apple">特別活動選集: <strong id="stat-apple">0</strong> 人</div>
-        <div class="stat-pill" id="pill-mypal1">MyPal一階: <strong id="stat-mypal1">0</strong> 人</div>
-        <div class="stat-pill" id="pill-mypal2">MyPal二階: <strong id="stat-mypal2">0</strong> 人</div>
         <div class="stat-pill" id="pill-reward">13週獎勵: <strong id="stat-reward">0</strong> 人</div>
+        <div class="stat-pill" id="pill-mypal1">MyPal一階: <strong id="stat-mypal1">0</strong> 人</div>
+        <div class="stat-pill" id="pill-iphone-master">iPhone 達人獎: <strong id="stat-iphone-master">0</strong> 人</div>
+        <div class="stat-pill" id="pill-mypal2">MyPal二階: <strong id="stat-mypal2">0</strong> 人</div>
+        <div class="stat-pill" id="pill-finish-award">完賽獎: <strong id="stat-finish-award">0</strong> 人</div>
         <div class="stat-pill" id="pill-tasks-done">基礎任務達標: <strong id="stat-tasks-done">0</strong> 人</div>
-        <div class="stat-pill" id="pill-npi">NPI直播: <strong id="stat-npi">0</strong> 人</div>
         <div class="stat-pill" id="pill-profile">個資更新: <strong id="stat-profile">0</strong> 人</div>
         <button class="logout-btn" onclick="handleLogout()" title="登出並鎖定系統">🔒 登出</button>
       </div>
@@ -816,8 +816,8 @@
         </select>
         <select id="filter-status" class="select-input" onchange="renderTable()">
           <option value="">所有人員狀態</option>
-          <option value="base-done">前4項全達標者</option>
-          <option value="base-pending">前4項有未完成者</option>
+          <option value="base-done">前3項全達標者</option>
+          <option value="base-pending">前3項有未完成者</option>
           <option value="profile-pending">個資未更新者</option>
         </select>
       </div>
@@ -850,10 +850,7 @@
           <th>更新<br>個人資料</th>
           <th>Sales<br>Coach</th>
           <th>Ignite<br>每月任務</th>
-          <th>認識 Guide<br>選集</th>
-          <th colspan="3" class="mypal-header">MyPal</th>
-          <th>2026 年 9 月<br>Apple 特別活動選集</th>
-          <th>2026 NPI 直播<br>回放與測驗</th>
+          <th colspan="5" class="mypal-header">MyPal</th>
         </tr>
         <!-- Header Row 2 -->
         <tr>
@@ -865,21 +862,20 @@
             <a href="https://reurl.cc/dOW9gz" target="_blank" rel="noopener noreferrer" 
                class="header-link-btn" title="🔗 點擊開啟：更新個人資料網頁">
               <svg class="link-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 2 0 0 1-2-2V8a2 2 2 0 0 1 2-2h6"></path>
+                <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path>
                 <polyline points="15 3 21 3 21 9"></polyline>
                 <line x1="10" y1="14" x2="21" y2="3"></line>
               </svg>
               <span>連結</span>
             </a>
           </th>
-          <th class="sub-header-label">八月成績</th>
-          <th class="sub-header-label">九月</th>
-          <th></th>
+          <th class="sub-header-label">九月成績</th>
+          <th class="sub-header-label">十月</th>
           <th class="sub-header-label" style="font-size:0.75rem; white-space:nowrap; padding:4px 8px;">獲得 13 週<br>完成獎勵</th>
           <th class="sub-header-label" style="font-size:0.75rem; white-space:nowrap; padding:4px 8px;">第一階段 iPhone<br>09/18 09:00 前</th>
+          <th class="sub-header-label" style="font-size:0.75rem; white-space:nowrap; padding:4px 8px;">iPhone 達人獎</th>
           <th class="sub-header-label" style="font-size:0.75rem; white-space:nowrap; padding:4px 8px;">第二階段 Apple Watch<br>09/24 23:59 前</th>
-          <th class="sub-header-label" style="font-size:0.75rem; white-space:nowrap; padding:4px 8px;">09/17 12:00 前</th>
-          <th class="sub-header-label" style="font-size:0.75rem; white-space:nowrap; padding:4px 8px;">09/28 23:59 前</th>
+          <th class="sub-header-label" style="font-size:0.75rem; white-space:nowrap; padding:4px 8px;">完賽獎</th>
         </tr>
       </thead>
       <tbody id="table-body">
@@ -903,14 +899,14 @@
   </div>
 
   <script>
-    // Embedded Complete Dataset from Updated CSV (09/23 報表)
+    // Embedded Complete Dataset from Updated CSV (10月份報表)
     const rawData = [
-      { id: 1, dealer: "旗冠科技股份有限公司", store: "THE LAB@微風南京", name: "許宥然", profile: "V", salesCoach: "V", igniteMonthly: "V", guideSelection: "V", mypalReward: "V", mypal1: "V", mypal2: "", appleEvent: "V", npiLive: "V" },
-      { id: 2, dealer: "旗冠科技股份有限公司", store: "THE LAB@微風南京", name: "許至權", profile: "V", salesCoach: "V", igniteMonthly: "V", guideSelection: "V", mypalReward: "V", mypal1: "V", mypal2: "V", appleEvent: "V", npiLive: "V" },
-      { id: 3, dealer: "旗冠科技股份有限公司", store: "THE LAB@微風南京", name: "林若蓁", profile: "V", salesCoach: "V", igniteMonthly: "V", guideSelection: "V", mypalReward: "V", mypal1: "V", mypal2: "", appleEvent: "V", npiLive: "V" },
-      { id: 4, dealer: "旗冠科技股份有限公司", store: "THE LAB@微風南京", name: "彭敬恒", profile: "V", salesCoach: "V", igniteMonthly: "V", guideSelection: "V", mypalReward: "V", mypal1: "V", mypal2: "", appleEvent: "V", npiLive: "V" },
-      { id: 5, dealer: "旗冠科技股份有限公司", store: "THE LAB@微風南京", name: "吳偉誠", profile: "V", salesCoach: "V", igniteMonthly: "V", guideSelection: "V", mypalReward: "V", mypal1: "V", mypal2: "", appleEvent: "V", npiLive: "V" },
-      { id: 6, dealer: "旗冠科技股份有限公司", store: "THE LAB@微風南京", name: "吳瑞芸", profile: "V", salesCoach: "V", igniteMonthly: "V", guideSelection: "V", mypalReward: "", mypal1: "V", mypal2: "V", appleEvent: "V", npiLive: "V" }
+      { id: 1, dealer: "旗冠科技股份有限公司", store: "THE LAB@微風南京", name: "許宥然", profile: "V", salesCoach: "V", igniteMonthly: "V", mypalReward: "V", mypal1: "V", iphoneMaster: "", mypal2: "V", finishAward: "" },
+      { id: 2, dealer: "旗冠科技股份有限公司", store: "THE LAB@微風南京", name: "許至權", profile: "V", salesCoach: "V", igniteMonthly: "V", mypalReward: "V", mypal1: "V", iphoneMaster: "", mypal2: "V", finishAward: "" },
+      { id: 3, dealer: "旗冠科技股份有限公司", store: "THE LAB@微風南京", name: "林若蓁", profile: "V", salesCoach: "V", igniteMonthly: "V", mypalReward: "V", mypal1: "V", iphoneMaster: "", mypal2: "V", finishAward: "" },
+      { id: 4, dealer: "旗冠科技股份有限公司", store: "THE LAB@微風南京", name: "彭敬恒", profile: "V", salesCoach: "V", igniteMonthly: "V", mypalReward: "V", mypal1: "V", iphoneMaster: "", mypal2: "V", finishAward: "" },
+      { id: 5, dealer: "旗冠科技股份有限公司", store: "THE LAB@微風南京", name: "吳偉誠", profile: "V", salesCoach: "V", igniteMonthly: "V", mypalReward: "V", mypal1: "V", iphoneMaster: "", mypal2: "V", finishAward: "" },
+      { id: 6, dealer: "旗冠科技股份有限公司", store: "THE LAB@微風南京", name: "吳瑞芸", profile: "V", salesCoach: "V", igniteMonthly: "V", mypalReward: "", mypal1: "V", iphoneMaster: "", mypal2: "V", finishAward: "" }
     ];
 
     // Initialize Store Filter Dropdown
@@ -946,13 +942,12 @@
       }
     }
 
-    // Check if person's first 4 base tasks are done
+    // Check if person's first 3 base tasks are done
     function isBaseTasksDone(item) {
       const p = item.profile && item.profile.trim().toUpperCase() === 'V';
       const sc = item.salesCoach && item.salesCoach.trim().toUpperCase() === 'V';
       const ig = item.igniteMonthly && item.igniteMonthly.trim().toUpperCase() === 'V';
-      const gd = item.guideSelection && item.guideSelection.trim().toUpperCase() === 'V';
-      return !!(p && sc && ig && gd);
+      return !!(p && sc && ig);
     }
 
     // Check if person's profile is updated
@@ -969,8 +964,8 @@
       const select = document.getElementById('filter-status');
       select.innerHTML = `
         <option value="">所有人員狀態</option>
-        <option value="base-done">前4項全達標者 (${baseDoneCount}人)</option>
-        <option value="base-pending">前4項有未完成者 (${basePendingCount}人)</option>
+        <option value="base-done">前3項全達標者 (${baseDoneCount}人)</option>
+        <option value="base-pending">前3項有未完成者 (${basePendingCount}人)</option>
         <option value="profile-pending">個資未更新者 (${profilePendingCount}人)</option>
       `;
     }
@@ -1027,23 +1022,23 @@
         }
       }
 
-      const appleDoneCount = filtered.filter(i => i.appleEvent && i.appleEvent.trim().toUpperCase() === 'V').length;
-      updateStatPill(appleDoneCount, 'pill-apple', 'stat-apple');
+      const rewardDoneCount = filtered.filter(i => i.mypalReward && i.mypalReward.trim().toUpperCase() === 'V').length;
+      updateStatPill(rewardDoneCount, 'pill-reward', 'stat-reward');
 
       const mypal1DoneCount = filtered.filter(i => i.mypal1 && i.mypal1.trim().toUpperCase() === 'V').length;
       updateStatPill(mypal1DoneCount, 'pill-mypal1', 'stat-mypal1');
 
+      const iphoneMasterDoneCount = filtered.filter(i => i.iphoneMaster && i.iphoneMaster.trim().toUpperCase() === 'V').length;
+      updateStatPill(iphoneMasterDoneCount, 'pill-iphone-master', 'stat-iphone-master');
+
       const mypal2DoneCount = filtered.filter(i => i.mypal2 && i.mypal2.trim().toUpperCase() === 'V').length;
       updateStatPill(mypal2DoneCount, 'pill-mypal2', 'stat-mypal2');
 
-      const rewardDoneCount = filtered.filter(i => i.mypalReward && i.mypalReward.trim().toUpperCase() === 'V').length;
-      updateStatPill(rewardDoneCount, 'pill-reward', 'stat-reward');
+      const finishAwardDoneCount = filtered.filter(i => i.finishAward && i.finishAward.trim().toUpperCase() === 'V').length;
+      updateStatPill(finishAwardDoneCount, 'pill-finish-award', 'stat-finish-award');
 
       const tasksDoneCount = filtered.filter(isBaseTasksDone).length;
       updateStatPill(tasksDoneCount, 'pill-tasks-done', 'stat-tasks-done');
-
-      const npiDoneCount = filtered.filter(i => i.npiLive && i.npiLive.trim().toUpperCase() === 'V').length;
-      updateStatPill(npiDoneCount, 'pill-npi', 'stat-npi');
 
       const profileDoneCount = filtered.filter(isProfileDone).length;
       updateStatPill(profileDoneCount, 'pill-profile', 'stat-profile', true);
@@ -1060,12 +1055,11 @@
           <td>${getLightHtml(item.profile)}</td>
           <td>${getLightHtml(item.salesCoach)}</td>
           <td>${getLightHtml(item.igniteMonthly)}</td>
-          <td>${getLightHtml(item.guideSelection)}</td>
           <td>${getLightHtml(item.mypalReward)}</td>
           <td>${getLightHtml(item.mypal1)}</td>
+          <td>${getLightHtml(item.iphoneMaster)}</td>
           <td>${getLightHtml(item.mypal2)}</td>
-          <td>${getLightHtml(item.appleEvent)}</td>
-          <td>${getLightHtml(item.npiLive)}</td>
+          <td>${getLightHtml(item.finishAward)}</td>
         `;
 
         tbody.appendChild(tr);
@@ -1076,7 +1070,7 @@
     function openModal(item) {
       document.getElementById('modal-person-name').textContent = `${item.name} (${item.store})`;
       
-      const tasks = [item.profile, item.salesCoach, item.igniteMonthly, item.guideSelection, item.mypalReward, item.mypal1, item.mypal2, item.appleEvent, item.npiLive];
+      const tasks = [item.profile, item.salesCoach, item.igniteMonthly, item.mypalReward, item.mypal1, item.iphoneMaster, item.mypal2, item.finishAward];
       const doneCount = tasks.filter(t => !!t).length;
 
       const content = document.getElementById('modal-content');
@@ -1097,16 +1091,12 @@
           </div>
         </div>
         <div class="modal-item">
-          <div class="modal-item-label">Sales Coach (八月成績)</div>
+          <div class="modal-item-label">Sales Coach (九月成績)</div>
           <div class="modal-item-value">${item.salesCoach ? '🟢 已完成' : '🔴 未完成'}</div>
         </div>
         <div class="modal-item">
-          <div class="modal-item-label">Ignite 每月任務 (九月)</div>
+          <div class="modal-item-label">Ignite 每月任務 (十月)</div>
           <div class="modal-item-value">${item.igniteMonthly ? '🟢 已完成' : '🔴 未完成'}</div>
-        </div>
-        <div class="modal-item">
-          <div class="modal-item-label">認識 Guide 選集</div>
-          <div class="modal-item-value">${item.guideSelection ? '🟢 已完成' : '🔴 未完成'}</div>
         </div>
         <div class="modal-item">
           <div class="modal-item-label">MyPal (獲得 13 週完成獎勵)</div>
@@ -1117,21 +1107,21 @@
           <div class="modal-item-value">${item.mypal1 ? '🟢 已完成' : '🔴 未完成'}</div>
         </div>
         <div class="modal-item">
+          <div class="modal-item-label">MyPal iPhone 達人獎</div>
+          <div class="modal-item-value">${item.iphoneMaster ? '🟢 已獲得' : '🔴 未獲得'}</div>
+        </div>
+        <div class="modal-item">
           <div class="modal-item-label">MyPal 第二階段 Apple Watch (09/24 23:59 前)</div>
           <div class="modal-item-value">${item.mypal2 ? '🟢 已完成' : '🔴 未完成'}</div>
         </div>
         <div class="modal-item">
-          <div class="modal-item-label">2026 年 9 月 Apple 特別活動選集 (09/17 12:00 前)</div>
-          <div class="modal-item-value">${item.appleEvent ? '🟢 已完成' : '🔴 未完成'}</div>
-        </div>
-        <div class="modal-item">
-          <div class="modal-item-label">2026 NPI 直播 回放與測驗 (09/28 23:59 前)</div>
-          <div class="modal-item-value">${item.npiLive ? '🟢 已完成' : '🔴 未完成'}</div>
+          <div class="modal-item-label">MyPal 完賽獎</div>
+          <div class="modal-item-value">${item.finishAward ? '🟢 已獲得' : '🔴 未獲得'}</div>
         </div>
         <div class="modal-item" style="grid-column: span 2;">
           <div class="modal-item-label">個人任務達成進度</div>
-          <div class="modal-item-value" style="color:${doneCount === 9 ? '#10b981' : '#2563eb'}; font-size:1.1rem;">
-            已完成 ${doneCount} / 9 項任務 (${((doneCount / 9) * 100).toFixed(0)}%)
+          <div class="modal-item-value" style="color:${doneCount === 8 ? '#10b981' : '#2563eb'}; font-size:1.1rem;">
+            已完成 ${doneCount} / 8 項任務 (${((doneCount / 8) * 100).toFixed(0)}%)
           </div>
         </div>
       `;
