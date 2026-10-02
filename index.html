@@ -872,10 +872,10 @@
           <th class="sub-header-label">九月成績</th>
           <th class="sub-header-label">十月</th>
           <th class="sub-header-label" style="font-size:0.75rem; white-space:nowrap; padding:4px 8px;">獲得 13 週<br>完成獎勵</th>
-          <th class="sub-header-label" style="font-size:0.75rem; white-space:nowrap; padding:4px 8px;">第一階段 iPhone<br>09/18 09:00 前</th>
-          <th class="sub-header-label" style="font-size:0.75rem; white-space:nowrap; padding:4px 8px;">iPhone 達人獎</th>
-          <th class="sub-header-label" style="font-size:0.75rem; white-space:nowrap; padding:4px 8px;">第二階段 Apple Watch<br>09/24 23:59 前</th>
-          <th class="sub-header-label" style="font-size:0.75rem; white-space:nowrap; padding:4px 8px;">完賽獎</th>
+          <th class="sub-header-label" style="font-size:0.75rem; white-space:nowrap; padding:4px 8px;">第一階段 iPhone</th>
+          <th class="sub-header-label" style="font-size:0.75rem; white-space:nowrap; padding:4px 8px;">iPhone 達人獎<br>09/18 09:00 前</th>
+          <th class="sub-header-label" style="font-size:0.75rem; white-space:nowrap; padding:4px 8px;">第二階段 Apple Watch</th>
+          <th class="sub-header-label" style="font-size:0.75rem; white-space:nowrap; padding:4px 8px;">完賽獎<br>09/24 23:59 前</th>
         </tr>
       </thead>
       <tbody id="table-body">
@@ -901,12 +901,12 @@
   <script>
     // Embedded Complete Dataset from Updated CSV (10月份報表)
     const rawData = [
-      { id: 1, dealer: "旗冠科技股份有限公司", store: "THE LAB@微風南京", name: "許宥然", profile: "V", salesCoach: "", igniteMonthly: "", mypalReward: "V", mypal1: "V", iphoneMaster: "", mypal2: "V", finishAward: "" },
-      { id: 2, dealer: "旗冠科技股份有限公司", store: "THE LAB@微風南京", name: "許至權", profile: "V", salesCoach: "", igniteMonthly: "", mypalReward: "V", mypal1: "V", iphoneMaster: "", mypal2: "V", finishAward: "" },
-      { id: 3, dealer: "旗冠科技股份有限公司", store: "THE LAB@微風南京", name: "林若蓁", profile: "V", salesCoach: "", igniteMonthly: "", mypalReward: "V", mypal1: "V", iphoneMaster: "", mypal2: "V", finishAward: "" },
-      { id: 4, dealer: "旗冠科技股份有限公司", store: "THE LAB@微風南京", name: "彭敬恒", profile: "V", salesCoach: "", igniteMonthly: "", mypalReward: "V", mypal1: "V", iphoneMaster: "", mypal2: "V", finishAward: "" },
-      { id: 5, dealer: "旗冠科技股份有限公司", store: "THE LAB@微風南京", name: "吳偉誠", profile: "V", salesCoach: "", igniteMonthly: "", mypalReward: "V", mypal1: "V", iphoneMaster: "", mypal2: "V", finishAward: "" },
-      { id: 6, dealer: "旗冠科技股份有限公司", store: "THE LAB@微風南京", name: "吳瑞芸", profile: "V", salesCoach: "", igniteMonthly: "", mypalReward: "", mypal1: "V", iphoneMaster: "", mypal2: "V", finishAward: "" }
+      { id: 1, dealer: "旗冠科技股份有限公司", store: "THE LAB@微風南京", name: "許宥然", profile: "V", salesCoach: "V", igniteMonthly: "V", mypalReward: "V", mypal1: "V", iphoneMaster: "V", mypal2: "V", finishAward: "V" },
+      { id: 2, dealer: "旗冠科技股份有限公司", store: "THE LAB@微風南京", name: "許至權", profile: "V", salesCoach: "", igniteMonthly: "", mypalReward: "V", mypal1: "V", iphoneMaster: "V", mypal2: "V", finishAward: "V" },
+      { id: 3, dealer: "旗冠科技股份有限公司", store: "THE LAB@微風南京", name: "林若蓁", profile: "V", salesCoach: "V", igniteMonthly: "V", mypalReward: "V", mypal1: "V", iphoneMaster: "V", mypal2: "V", finishAward: "V" },
+      { id: 4, dealer: "旗冠科技股份有限公司", store: "THE LAB@微風南京", name: "彭敬恒", profile: "V", salesCoach: "V", igniteMonthly: "V", mypalReward: "V", mypal1: "V", iphoneMaster: "V", mypal2: "V", finishAward: "V" },
+      { id: 5, dealer: "旗冠科技股份有限公司", store: "THE LAB@微風南京", name: "吳偉誠", profile: "V", salesCoach: "V", igniteMonthly: "V", mypalReward: "V", mypal1: "V", iphoneMaster: "V", mypal2: "V", finishAward: "V" },
+      { id: 6, dealer: "旗冠科技股份有限公司", store: "THE LAB@微風南京", name: "吳瑞芸", profile: "V", salesCoach: "V", igniteMonthly: "V", mypalReward: "", mypal1: "V", iphoneMaster: "V", mypal2: "V", finishAward: "V" }
     ];
 
     // Initialize Store Filter Dropdown
@@ -1103,19 +1103,19 @@
           <div class="modal-item-value">${item.mypalReward ? '🟢 已完成' : '🔴 未完成'}</div>
         </div>
         <div class="modal-item">
-          <div class="modal-item-label">MyPal 第一階段 iPhone (09/18 09:00 前)</div>
+          <div class="modal-item-label">MyPal 第一階段 iPhone</div>
           <div class="modal-item-value">${item.mypal1 ? '🟢 已完成' : '🔴 未完成'}</div>
         </div>
         <div class="modal-item">
-          <div class="modal-item-label">MyPal iPhone 達人獎</div>
+          <div class="modal-item-label">MyPal iPhone 達人獎 (09/18 09:00 前)</div>
           <div class="modal-item-value">${item.iphoneMaster ? '🟢 已獲得' : '🔴 未獲得'}</div>
         </div>
         <div class="modal-item">
-          <div class="modal-item-label">MyPal 第二階段 Apple Watch (09/24 23:59 前)</div>
+          <div class="modal-item-label">MyPal 第二階段 Apple Watch</div>
           <div class="modal-item-value">${item.mypal2 ? '🟢 已完成' : '🔴 未完成'}</div>
         </div>
         <div class="modal-item">
-          <div class="modal-item-label">MyPal 完賽獎</div>
+          <div class="modal-item-label">MyPal 完賽獎 (09/24 23:59 前)</div>
           <div class="modal-item-value">${item.finishAward ? '🟢 已獲得' : '🔴 未獲得'}</div>
         </div>
         <div class="modal-item" style="grid-column: span 2;">
