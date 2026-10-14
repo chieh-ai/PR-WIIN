@@ -798,6 +798,17 @@
         <div class="stat-pill" id="pill-tasks-done">基礎任務達標: <strong id="stat-tasks-done">0</strong> 人</div>
         <div class="stat-pill" id="pill-ignite">Ignite十月: <strong id="stat-ignite">0</strong> 人</div>
         <div class="stat-pill" id="pill-profile">個資更新: <strong id="stat-profile">0</strong> 人</div>
+        <div class="stat-pill" id="pill-wk1" style="display:none;">WK1: <strong id="stat-wk1">0</strong> 人</div>
+        <div class="stat-pill" id="pill-wk2" style="display:none;">WK2: <strong id="stat-wk2">0</strong> 人</div>
+        <div class="stat-pill" id="pill-wk3" style="display:none;">WK3: <strong id="stat-wk3">0</strong> 人</div>
+        <div class="stat-pill" id="pill-wk4" style="display:none;">WK4: <strong id="stat-wk4">0</strong> 人</div>
+        <div class="stat-pill" id="pill-wk5" style="display:none;">WK5: <strong id="stat-wk5">0</strong> 人</div>
+        <div class="stat-pill" id="pill-wk6" style="display:none;">WK6: <strong id="stat-wk6">0</strong> 人</div>
+        <div class="stat-pill" id="pill-wk7" style="display:none;">WK7: <strong id="stat-wk7">0</strong> 人</div>
+        <div class="stat-pill" id="pill-wk8" style="display:none;">WK8: <strong id="stat-wk8">0</strong> 人</div>
+        <div class="stat-pill" id="pill-wk9" style="display:none;">WK9: <strong id="stat-wk9">0</strong> 人</div>
+        <div class="stat-pill" id="pill-wk10" style="display:none;">WK10: <strong id="stat-wk10">0</strong> 人</div>
+        <div class="stat-pill" id="pill-wk11" style="display:none;">WK11: <strong id="stat-wk11">0</strong> 人</div>
         <button class="logout-btn" onclick="handleLogout()" title="登出並鎖定系統">🔒 登出</button>
       </div>
     </header>
@@ -901,12 +912,12 @@
   <script>
     // Embedded Complete Dataset from Updated CSV (10月份報表 - MyPal FY27Q1 11週挑戰賽)
     const rawData = [
-      { id: 1, dealer: "旗冠科技股份有限公司", store: "THE LAB@微風南京", name: "許宥然", profile: "V", igniteMonthly: "V", wk1: "", wk2: "", wk3: "", wk4: "", wk5: "", wk6: "", wk7: "", wk8: "", wk9: "", wk10: "", wk11: "" },
+      { id: 1, dealer: "旗冠科技股份有限公司", store: "THE LAB@微風南京", name: "許宥然", profile: "V", igniteMonthly: "V", wk1: "V", wk2: "", wk3: "", wk4: "", wk5: "", wk6: "", wk7: "", wk8: "", wk9: "", wk10: "", wk11: "" },
       { id: 2, dealer: "旗冠科技股份有限公司", store: "THE LAB@微風南京", name: "許至權", profile: "V", igniteMonthly: "", wk1: "", wk2: "", wk3: "", wk4: "", wk5: "", wk6: "", wk7: "", wk8: "", wk9: "", wk10: "", wk11: "" },
-      { id: 3, dealer: "旗冠科技股份有限公司", store: "THE LAB@微風南京", name: "林若蓁", profile: "V", igniteMonthly: "V", wk1: "", wk2: "", wk3: "", wk4: "", wk5: "", wk6: "", wk7: "", wk8: "", wk9: "", wk10: "", wk11: "" },
-      { id: 4, dealer: "旗冠科技股份有限公司", store: "THE LAB@微風南京", name: "彭敬恒", profile: "V", igniteMonthly: "V", wk1: "", wk2: "", wk3: "", wk4: "", wk5: "", wk6: "", wk7: "", wk8: "", wk9: "", wk10: "", wk11: "" },
+      { id: 3, dealer: "旗冠科技股份有限公司", store: "THE LAB@微風南京", name: "林若蓁", profile: "V", igniteMonthly: "V", wk1: "V", wk2: "", wk3: "", wk4: "", wk5: "", wk6: "", wk7: "", wk8: "", wk9: "", wk10: "", wk11: "" },
+      { id: 4, dealer: "旗冠科技股份有限公司", store: "THE LAB@微風南京", name: "彭敬恒", profile: "V", igniteMonthly: "V", wk1: "V", wk2: "", wk3: "", wk4: "", wk5: "", wk6: "", wk7: "", wk8: "", wk9: "", wk10: "", wk11: "" },
       { id: 5, dealer: "旗冠科技股份有限公司", store: "THE LAB@微風南京", name: "吳偉誠", profile: "V", igniteMonthly: "V", wk1: "", wk2: "", wk3: "", wk4: "", wk5: "", wk6: "", wk7: "", wk8: "", wk9: "", wk10: "", wk11: "" },
-      { id: 6, dealer: "旗冠科技股份有限公司", store: "THE LAB@微風南京", name: "吳瑞芸", profile: "V", igniteMonthly: "V", wk1: "", wk2: "", wk3: "", wk4: "", wk5: "", wk6: "", wk7: "", wk8: "", wk9: "", wk10: "", wk11: "" }
+      { id: 6, dealer: "旗冠科技股份有限公司", store: "THE LAB@微風南京", name: "吳瑞芸", profile: "V", igniteMonthly: "V", wk1: "V", wk2: "", wk3: "", wk4: "", wk5: "", wk6: "", wk7: "", wk8: "", wk9: "", wk10: "", wk11: "" }
     ];
 
     // Initialize Store Filter Dropdown
@@ -1029,6 +1040,22 @@
 
       const profileDoneCount = filtered.filter(isProfileDone).length;
       updateStatPill(profileDoneCount, 'pill-profile', 'stat-profile', true);
+
+      // WK1 ~ WK11 Challenge Weekly Stat Pills
+      for (let w = 1; w <= 11; w++) {
+        const key = `wk${w}`;
+        const count = filtered.filter(i => i[key] && i[key].trim().toUpperCase() === 'V').length;
+        const statEl = document.getElementById(`stat-wk${w}`);
+        if (statEl) {
+          statEl.textContent = count;
+        }
+        const pillEl = document.getElementById(`pill-wk${w}`);
+        if (pillEl) {
+          // 只列出未全數完成且已開跑 (有完成者) 的項目
+          const shouldShow = totalFiltered > 0 && count > 0 && count < totalFiltered;
+          pillEl.style.display = shouldShow ? 'flex' : 'none';
+        }
+      }
 
       // Render Rows
       filtered.forEach(item => {
