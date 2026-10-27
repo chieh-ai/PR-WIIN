@@ -797,6 +797,7 @@
         <div class="stat-pill">追蹤人員: <strong id="stat-people">0</strong> 人</div>
         <div class="stat-pill" id="pill-tasks-done">基礎任務達標: <strong id="stat-tasks-done">0</strong> 人</div>
         <div class="stat-pill" id="pill-ignite">Ignite十月: <strong id="stat-ignite">0</strong> 人</div>
+        <div class="stat-pill" id="pill-ignite-special">Ignite限時: <strong id="stat-ignite-special">0</strong> 人</div>
         <div class="stat-pill" id="pill-profile">個資更新: <strong id="stat-profile">0</strong> 人</div>
         <div class="stat-pill" id="pill-wk1" style="display:none;">WK1: <strong id="stat-wk1">0</strong> 人</div>
         <div class="stat-pill" id="pill-wk2" style="display:none;">WK2: <strong id="stat-wk2">0</strong> 人</div>
@@ -857,6 +858,7 @@
           <th>更新<br>個人資料</th>
           <th>Ignite<br>每月任務</th>
           <th colspan="11" class="mypal-header">MyPal FY27Q1 11 週挑戰賽</th>
+          <th>Ignite<br>限時活動</th>
         </tr>
         <!-- Header Row 2 -->
         <tr>
@@ -887,6 +889,7 @@
           <th class="sub-header-label" style="font-size:0.75rem; white-space:nowrap; padding:4px 8px;">WK9</th>
           <th class="sub-header-label" style="font-size:0.75rem; white-space:nowrap; padding:4px 8px;">WK10</th>
           <th class="sub-header-label" style="font-size:0.75rem; white-space:nowrap; padding:4px 8px;">WK11</th>
+          <th class="sub-header-label">十月</th>
         </tr>
       </thead>
       <tbody id="table-body">
@@ -912,12 +915,12 @@
   <script>
     // Embedded Complete Dataset from Updated CSV (10月份報表 - MyPal FY27Q1 11週挑戰賽)
     const rawData = [
-      { id: 1, dealer: "旗冠科技股份有限公司", store: "THE LAB@微風南京", name: "許宥然", profile: "V", igniteMonthly: "V", wk1: "V", wk2: "V", wk3: "", wk4: "", wk5: "", wk6: "", wk7: "", wk8: "", wk9: "", wk10: "", wk11: "" },
-      { id: 2, dealer: "旗冠科技股份有限公司", store: "THE LAB@微風南京", name: "許至權", profile: "V", igniteMonthly: "", wk1: "V", wk2: "V", wk3: "", wk4: "", wk5: "", wk6: "", wk7: "", wk8: "", wk9: "", wk10: "", wk11: "" },
-      { id: 3, dealer: "旗冠科技股份有限公司", store: "THE LAB@微風南京", name: "林若蓁", profile: "V", igniteMonthly: "V", wk1: "V", wk2: "V", wk3: "", wk4: "", wk5: "", wk6: "", wk7: "", wk8: "", wk9: "", wk10: "", wk11: "" },
-      { id: 4, dealer: "旗冠科技股份有限公司", store: "THE LAB@微風南京", name: "彭敬恒", profile: "V", igniteMonthly: "V", wk1: "V", wk2: "V", wk3: "", wk4: "", wk5: "", wk6: "", wk7: "", wk8: "", wk9: "", wk10: "", wk11: "" },
-      { id: 5, dealer: "旗冠科技股份有限公司", store: "THE LAB@微風南京", name: "吳偉誠", profile: "V", igniteMonthly: "V", wk1: "V", wk2: "V", wk3: "", wk4: "", wk5: "", wk6: "", wk7: "", wk8: "", wk9: "", wk10: "", wk11: "" },
-      { id: 6, dealer: "旗冠科技股份有限公司", store: "THE LAB@微風南京", name: "吳瑞芸", profile: "V", igniteMonthly: "V", wk1: "V", wk2: "V", wk3: "", wk4: "", wk5: "", wk6: "", wk7: "", wk8: "", wk9: "", wk10: "", wk11: "" }
+      { id: 1, dealer: "旗冠科技股份有限公司", store: "THE LAB@微風南京", name: "許宥然", profile: "V", igniteMonthly: "V", wk1: "V", wk2: "V", wk3: "", wk4: "", wk5: "", wk6: "", wk7: "", wk8: "", wk9: "", wk10: "", wk11: "", igniteSpecial: "" },
+      { id: 2, dealer: "旗冠科技股份有限公司", store: "THE LAB@微風南京", name: "許至權", profile: "V", igniteMonthly: "", wk1: "V", wk2: "V", wk3: "", wk4: "", wk5: "", wk6: "", wk7: "", wk8: "", wk9: "", wk10: "", wk11: "", igniteSpecial: "" },
+      { id: 3, dealer: "旗冠科技股份有限公司", store: "THE LAB@微風南京", name: "林若蓁", profile: "V", igniteMonthly: "V", wk1: "V", wk2: "V", wk3: "", wk4: "", wk5: "", wk6: "", wk7: "", wk8: "", wk9: "", wk10: "", wk11: "", igniteSpecial: "" },
+      { id: 4, dealer: "旗冠科技股份有限公司", store: "THE LAB@微風南京", name: "彭敬恒", profile: "V", igniteMonthly: "V", wk1: "V", wk2: "V", wk3: "", wk4: "", wk5: "", wk6: "", wk7: "", wk8: "", wk9: "", wk10: "", wk11: "", igniteSpecial: "" },
+      { id: 5, dealer: "旗冠科技股份有限公司", store: "THE LAB@微風南京", name: "吳偉誠", profile: "V", igniteMonthly: "V", wk1: "V", wk2: "V", wk3: "", wk4: "", wk5: "", wk6: "", wk7: "", wk8: "", wk9: "", wk10: "", wk11: "", igniteSpecial: "" },
+      { id: 6, dealer: "旗冠科技股份有限公司", store: "THE LAB@微風南京", name: "吳瑞芸", profile: "V", igniteMonthly: "V", wk1: "V", wk2: "V", wk3: "", wk4: "", wk5: "", wk6: "", wk7: "", wk8: "", wk9: "", wk10: "", wk11: "", igniteSpecial: "" }
     ];
 
     // Initialize Store Filter Dropdown
@@ -1038,6 +1041,9 @@
       const igniteDoneCount = filtered.filter(i => i.igniteMonthly && i.igniteMonthly.trim().toUpperCase() === 'V').length;
       updateStatPill(igniteDoneCount, 'pill-ignite', 'stat-ignite');
 
+      const igniteSpecialDoneCount = filtered.filter(i => i.igniteSpecial && i.igniteSpecial.trim().toUpperCase() === 'V').length;
+      updateStatPill(igniteSpecialDoneCount, 'pill-ignite-special', 'stat-ignite-special');
+
       const profileDoneCount = filtered.filter(isProfileDone).length;
       updateStatPill(profileDoneCount, 'pill-profile', 'stat-profile', true);
 
@@ -1079,6 +1085,7 @@
           <td>${getLightHtml(item.wk9)}</td>
           <td>${getLightHtml(item.wk10)}</td>
           <td>${getLightHtml(item.wk11)}</td>
+          <td>${getLightHtml(item.igniteSpecial)}</td>
         `;
 
         tbody.appendChild(tr);
@@ -1090,7 +1097,7 @@
       document.getElementById('modal-person-name').textContent = `${item.name} (${item.store})`;
       
       const wkList = [item.wk1, item.wk2, item.wk3, item.wk4, item.wk5, item.wk6, item.wk7, item.wk8, item.wk9, item.wk10, item.wk11];
-      const tasks = [item.profile, item.igniteMonthly, ...wkList];
+      const tasks = [item.profile, item.igniteMonthly, ...wkList, item.igniteSpecial];
       const doneCount = tasks.filter(t => !!t).length;
 
       const wkItemsHtml = wkList.map((w, idx) => `
@@ -1122,10 +1129,14 @@
           <div class="modal-item-value">${item.igniteMonthly ? '🟢 已完成' : '🔴 未完成'}</div>
         </div>
         ${wkItemsHtml}
+        <div class="modal-item">
+          <div class="modal-item-label">Ignite 限時活動 (十月)</div>
+          <div class="modal-item-value">${item.igniteSpecial ? '🟢 已完成' : '🔴 未完成'}</div>
+        </div>
         <div class="modal-item" style="grid-column: span 2;">
           <div class="modal-item-label">個人任務達成進度</div>
-          <div class="modal-item-value" style="color:${doneCount === 13 ? '#10b981' : '#2563eb'}; font-size:1.1rem;">
-            已完成 ${doneCount} / 13 項任務 (${((doneCount / 13) * 100).toFixed(0)}%)
+          <div class="modal-item-value" style="color:${doneCount === 14 ? '#10b981' : '#2563eb'}; font-size:1.1rem;">
+            已完成 ${doneCount} / 14 項任務 (${((doneCount / 14) * 100).toFixed(0)}%)
           </div>
         </div>
       `;
