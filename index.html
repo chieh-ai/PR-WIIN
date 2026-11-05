@@ -217,7 +217,7 @@
       border-collapse: separate;
       border-spacing: 0;
       width: 100%;
-      min-width: 900px;
+      min-width: 1400px;
       font-size: 0.85rem;
     }
 
@@ -245,8 +245,8 @@
       height: var(--header-row2-h);
     }
 
-    /* Merged Header Title for WK1~WK13 */
-    .mypal-header {
+    /* Merged Header Title for WK1~WK11 & Sales Coach */
+    .mypal-header, .salescoach-header {
       background: #e2e8f0 !important;
       color: #0f172a;
       font-size: 0.9rem;
@@ -790,14 +790,17 @@
     <header class="app-header">
       <h1>
         <span>WIIN AAR 門市人員任務追蹤表</span>
-        <span class="badge">10月份報表</span>
+        <span class="badge">11月份報表</span>
       </h1>
       <div class="header-stats">
         <div class="stat-pill">經銷門市: <strong id="stat-stores">0</strong> 家</div>
         <div class="stat-pill">追蹤人員: <strong id="stat-people">0</strong> 人</div>
         <div class="stat-pill" id="pill-tasks-done">基礎任務達標: <strong id="stat-tasks-done">0</strong> 人</div>
-        <div class="stat-pill" id="pill-ignite">Ignite十月: <strong id="stat-ignite">0</strong> 人</div>
-        <div class="stat-pill" id="pill-ignite-special">Ignite限時: <strong id="stat-ignite-special">0</strong> 人</div>
+        <div class="stat-pill" id="pill-ignite">Ignite十一月: <strong id="stat-ignite">0</strong> 人</div>
+        <div class="stat-pill" id="pill-sc-monthly" style="display:none;">Sales Coach十月: <strong id="stat-sc-monthly">0</strong> 人</div>
+        <div class="stat-pill" id="pill-sc-app" style="display:none;">OS 27 軟體應用: <strong id="stat-sc-app">0</strong> 人</div>
+        <div class="stat-pill" id="pill-sc-resource" style="display:none;">新經銷商資源: <strong id="stat-sc-resource">0</strong> 人</div>
+        <div class="stat-pill" id="pill-sc-exam" style="display:none;">Mac 新功能測驗: <strong id="stat-sc-exam">0</strong> 人</div>
         <div class="stat-pill" id="pill-profile">個資更新: <strong id="stat-profile">0</strong> 人</div>
         <div class="stat-pill" id="pill-wk1" style="display:none;">WK1: <strong id="stat-wk1">0</strong> 人</div>
         <div class="stat-pill" id="pill-wk2" style="display:none;">WK2: <strong id="stat-wk2">0</strong> 人</div>
@@ -858,7 +861,7 @@
           <th>更新<br>個人資料</th>
           <th>Ignite<br>每月任務</th>
           <th colspan="11" class="mypal-header">MyPal FY27Q1 11 週挑戰賽</th>
-          <th>Ignite<br>限時活動</th>
+          <th colspan="4" class="salescoach-header">Sales Coach</th>
         </tr>
         <!-- Header Row 2 -->
         <tr>
@@ -877,7 +880,7 @@
               <span>連結</span>
             </a>
           </th>
-          <th class="sub-header-label">十月</th>
+          <th class="sub-header-label">十一月</th>
           <th class="sub-header-label" style="font-size:0.75rem; white-space:nowrap; padding:4px 8px;">WK1</th>
           <th class="sub-header-label" style="font-size:0.75rem; white-space:nowrap; padding:4px 8px;">WK2</th>
           <th class="sub-header-label" style="font-size:0.75rem; white-space:nowrap; padding:4px 8px;">WK3</th>
@@ -889,7 +892,10 @@
           <th class="sub-header-label" style="font-size:0.75rem; white-space:nowrap; padding:4px 8px;">WK9</th>
           <th class="sub-header-label" style="font-size:0.75rem; white-space:nowrap; padding:4px 8px;">WK10</th>
           <th class="sub-header-label" style="font-size:0.75rem; white-space:nowrap; padding:4px 8px;">WK11</th>
-          <th class="sub-header-label">十月</th>
+          <th class="sub-header-label" style="font-size:0.75rem; white-space:nowrap; padding:4px 8px;">每月成績<br>(十月)</th>
+          <th class="sub-header-label" style="font-size:0.75rem; white-space:nowrap; padding:4px 8px;">OS 27<br>軟體應用</th>
+          <th class="sub-header-label" style="font-size:0.75rem; white-space:nowrap; padding:4px 8px;">新經銷商<br>培訓資源</th>
+          <th class="sub-header-label" style="font-size:0.75rem; white-space:nowrap; padding:4px 8px;">測驗 - Mac<br>的新功能</th>
         </tr>
       </thead>
       <tbody id="table-body">
@@ -913,14 +919,14 @@
   </div>
 
   <script>
-    // Embedded Complete Dataset from Updated CSV (10月份報表 - MyPal FY27Q1 11週挑戰賽)
+    // Embedded Complete Dataset from Updated CSV (11月份報表 - MyPal FY27Q1 11週挑戰賽 & Sales Coach)
     const rawData = [
-      { id: 1, dealer: "旗冠科技股份有限公司", store: "THE LAB@微風南京", name: "許宥然", profile: "V", igniteMonthly: "V", wk1: "V", wk2: "V", wk3: "", wk4: "", wk5: "", wk6: "", wk7: "", wk8: "", wk9: "", wk10: "", wk11: "", igniteSpecial: "" },
-      { id: 2, dealer: "旗冠科技股份有限公司", store: "THE LAB@微風南京", name: "許至權", profile: "V", igniteMonthly: "", wk1: "V", wk2: "V", wk3: "", wk4: "", wk5: "", wk6: "", wk7: "", wk8: "", wk9: "", wk10: "", wk11: "", igniteSpecial: "" },
-      { id: 3, dealer: "旗冠科技股份有限公司", store: "THE LAB@微風南京", name: "林若蓁", profile: "V", igniteMonthly: "V", wk1: "V", wk2: "V", wk3: "", wk4: "", wk5: "", wk6: "", wk7: "", wk8: "", wk9: "", wk10: "", wk11: "", igniteSpecial: "" },
-      { id: 4, dealer: "旗冠科技股份有限公司", store: "THE LAB@微風南京", name: "彭敬恒", profile: "V", igniteMonthly: "V", wk1: "V", wk2: "V", wk3: "", wk4: "", wk5: "", wk6: "", wk7: "", wk8: "", wk9: "", wk10: "", wk11: "", igniteSpecial: "" },
-      { id: 5, dealer: "旗冠科技股份有限公司", store: "THE LAB@微風南京", name: "吳偉誠", profile: "V", igniteMonthly: "V", wk1: "V", wk2: "V", wk3: "", wk4: "", wk5: "", wk6: "", wk7: "", wk8: "", wk9: "", wk10: "", wk11: "", igniteSpecial: "" },
-      { id: 6, dealer: "旗冠科技股份有限公司", store: "THE LAB@微風南京", name: "吳瑞芸", profile: "V", igniteMonthly: "V", wk1: "V", wk2: "V", wk3: "", wk4: "", wk5: "", wk6: "", wk7: "", wk8: "", wk9: "", wk10: "", wk11: "", igniteSpecial: "" }
+      { id: 1, dealer: "旗冠", store: "The Lab 微風南京店", name: "吳偉誠", profile: "V", igniteMonthly: "", wk1: "V", wk2: "V", wk3: "V", wk4: "V", wk5: "", wk6: "", wk7: "", wk8: "", wk9: "", wk10: "", wk11: "", scMonthly: "V", scApp: "", scResource: "", scExam: "" },
+      { id: 2, dealer: "旗冠", store: "The Lab 微風南京店", name: "吳瑞芸", profile: "V", igniteMonthly: "", wk1: "V", wk2: "V", wk3: "V", wk4: "V", wk5: "", wk6: "", wk7: "", wk8: "", wk9: "", wk10: "", wk11: "", scMonthly: "V", scApp: "", scResource: "", scExam: "" },
+      { id: 3, dealer: "旗冠", store: "The Lab 微風南京店", name: "林若蓁", profile: "V", igniteMonthly: "V", wk1: "V", wk2: "V", wk3: "V", wk4: "V", wk5: "", wk6: "", wk7: "", wk8: "", wk9: "", wk10: "", wk11: "", scMonthly: "V", scApp: "V", scResource: "V", scExam: "" },
+      { id: 4, dealer: "旗冠", store: "The Lab 微風南京店", name: "許至權", profile: "V", igniteMonthly: "", wk1: "V", wk2: "V", wk3: "V", wk4: "V", wk5: "", wk6: "", wk7: "", wk8: "", wk9: "", wk10: "", wk11: "", scMonthly: "V", scApp: "", scResource: "", scExam: "" },
+      { id: 5, dealer: "旗冠", store: "The Lab 微風南京店", name: "許宥然", profile: "V", igniteMonthly: "", wk1: "V", wk2: "V", wk3: "V", wk4: "V", wk5: "", wk6: "", wk7: "", wk8: "", wk9: "", wk10: "", wk11: "", scMonthly: "V", scApp: "", scResource: "", scExam: "" },
+      { id: 6, dealer: "旗冠", store: "The Lab 微風南京店", name: "彭敬恒", profile: "V", igniteMonthly: "", wk1: "V", wk2: "V", wk3: "V", wk4: "V", wk5: "", wk6: "", wk7: "", wk8: "", wk9: "", wk10: "", wk11: "", scMonthly: "V", scApp: "V", scResource: "V", scExam: "" }
     ];
 
     // Initialize Store Filter Dropdown
@@ -956,11 +962,12 @@
       }
     }
 
-    // Check if person's base tasks are done
+    // Check if person's base tasks are done (個資、Ignite每月任務、Sales Coach每月成績)
     function isBaseTasksDone(item) {
       const p = item.profile && item.profile.trim().toUpperCase() === 'V';
       const ig = item.igniteMonthly && item.igniteMonthly.trim().toUpperCase() === 'V';
-      return !!(p && ig);
+      const sc = item.scMonthly && item.scMonthly.trim().toUpperCase() === 'V';
+      return !!(p && ig && sc);
     }
 
     // Check if person's profile is updated
@@ -1041,8 +1048,28 @@
       const igniteDoneCount = filtered.filter(i => i.igniteMonthly && i.igniteMonthly.trim().toUpperCase() === 'V').length;
       updateStatPill(igniteDoneCount, 'pill-ignite', 'stat-ignite');
 
-      const igniteSpecialDoneCount = filtered.filter(i => i.igniteSpecial && i.igniteSpecial.trim().toUpperCase() === 'V').length;
-      updateStatPill(igniteSpecialDoneCount, 'pill-ignite-special', 'stat-ignite-special');
+      const scMonthlyDoneCount = filtered.filter(i => i.scMonthly && i.scMonthly.trim().toUpperCase() === 'V').length;
+      updateStatPill(scMonthlyDoneCount, 'pill-sc-monthly', 'stat-sc-monthly');
+
+      // Helper for optional / secondary course stat pills (only show if started and not all completed)
+      function updateSubTaskPill(count, pillId, statId) {
+        const statEl = document.getElementById(statId);
+        if (statEl) statEl.textContent = count;
+        const pillEl = document.getElementById(pillId);
+        if (pillEl) {
+          const shouldShow = totalFiltered > 0 && count > 0 && count < totalFiltered;
+          pillEl.style.display = shouldShow ? 'flex' : 'none';
+        }
+      }
+
+      const scAppCount = filtered.filter(i => i.scApp && i.scApp.trim().toUpperCase() === 'V').length;
+      updateSubTaskPill(scAppCount, 'pill-sc-app', 'stat-sc-app');
+
+      const scResourceCount = filtered.filter(i => i.scResource && i.scResource.trim().toUpperCase() === 'V').length;
+      updateSubTaskPill(scResourceCount, 'pill-sc-resource', 'stat-sc-resource');
+
+      const scExamCount = filtered.filter(i => i.scExam && i.scExam.trim().toUpperCase() === 'V').length;
+      updateSubTaskPill(scExamCount, 'pill-sc-exam', 'stat-sc-exam');
 
       const profileDoneCount = filtered.filter(isProfileDone).length;
       updateStatPill(profileDoneCount, 'pill-profile', 'stat-profile', true);
@@ -1051,16 +1078,7 @@
       for (let w = 1; w <= 11; w++) {
         const key = `wk${w}`;
         const count = filtered.filter(i => i[key] && i[key].trim().toUpperCase() === 'V').length;
-        const statEl = document.getElementById(`stat-wk${w}`);
-        if (statEl) {
-          statEl.textContent = count;
-        }
-        const pillEl = document.getElementById(`pill-wk${w}`);
-        if (pillEl) {
-          // 只列出未全數完成且已開跑 (有完成者) 的項目
-          const shouldShow = totalFiltered > 0 && count > 0 && count < totalFiltered;
-          pillEl.style.display = shouldShow ? 'flex' : 'none';
-        }
+        updateSubTaskPill(count, `pill-wk${w}`, `stat-wk${w}`);
       }
 
       // Render Rows
@@ -1085,7 +1103,10 @@
           <td>${getLightHtml(item.wk9)}</td>
           <td>${getLightHtml(item.wk10)}</td>
           <td>${getLightHtml(item.wk11)}</td>
-          <td>${getLightHtml(item.igniteSpecial)}</td>
+          <td>${getLightHtml(item.scMonthly)}</td>
+          <td>${getLightHtml(item.scApp)}</td>
+          <td>${getLightHtml(item.scResource)}</td>
+          <td>${getLightHtml(item.scExam)}</td>
         `;
 
         tbody.appendChild(tr);
@@ -1097,8 +1118,8 @@
       document.getElementById('modal-person-name').textContent = `${item.name} (${item.store})`;
       
       const wkList = [item.wk1, item.wk2, item.wk3, item.wk4, item.wk5, item.wk6, item.wk7, item.wk8, item.wk9, item.wk10, item.wk11];
-      const tasks = [item.profile, item.igniteMonthly, ...wkList, item.igniteSpecial];
-      const doneCount = tasks.filter(t => !!t).length;
+      const tasks = [item.profile, item.igniteMonthly, ...wkList, item.scMonthly, item.scApp, item.scResource, item.scExam];
+      const doneCount = tasks.filter(t => !!(t && t.trim())).length;
 
       const wkItemsHtml = wkList.map((w, idx) => `
         <div class="modal-item">
@@ -1125,18 +1146,30 @@
           </div>
         </div>
         <div class="modal-item">
-          <div class="modal-item-label">Ignite 每月任務 (十月)</div>
+          <div class="modal-item-label">Ignite 每月任務 (十一月)</div>
           <div class="modal-item-value">${item.igniteMonthly ? '🟢 已完成' : '🔴 未完成'}</div>
         </div>
         ${wkItemsHtml}
         <div class="modal-item">
-          <div class="modal-item-label">Ignite 限時活動 (十月)</div>
-          <div class="modal-item-value">${item.igniteSpecial ? '🟢 已完成' : '🔴 未完成'}</div>
+          <div class="modal-item-label">Sales Coach 每月成績 (十月)</div>
+          <div class="modal-item-value">${item.scMonthly ? '🟢 已完成' : '🔴 未完成'}</div>
+        </div>
+        <div class="modal-item">
+          <div class="modal-item-label">Sales Coach (OS 27 軟體應用)</div>
+          <div class="modal-item-value">${item.scApp ? '🟢 已完成' : '🔴 未完成'}</div>
+        </div>
+        <div class="modal-item">
+          <div class="modal-item-label">Sales Coach (新經銷商培訓資源)</div>
+          <div class="modal-item-value">${item.scResource ? '🟢 已完成' : '🔴 未完成'}</div>
+        </div>
+        <div class="modal-item">
+          <div class="modal-item-label">Sales Coach (測驗 - Mac 的新功能)</div>
+          <div class="modal-item-value">${item.scExam ? '🟢 已完成' : '🔴 未完成'}</div>
         </div>
         <div class="modal-item" style="grid-column: span 2;">
           <div class="modal-item-label">個人任務達成進度</div>
-          <div class="modal-item-value" style="color:${doneCount === 14 ? '#10b981' : '#2563eb'}; font-size:1.1rem;">
-            已完成 ${doneCount} / 14 項任務 (${((doneCount / 14) * 100).toFixed(0)}%)
+          <div class="modal-item-value" style="color:${doneCount === 17 ? '#10b981' : '#2563eb'}; font-size:1.1rem;">
+            已完成 ${doneCount} / 17 項任務 (${((doneCount / 17) * 100).toFixed(0)}%)
           </div>
         </div>
       `;
