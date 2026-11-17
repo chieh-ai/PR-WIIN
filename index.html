@@ -59,11 +59,10 @@
     .app-header {
       background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);
       color: #ffffff;
-      padding: 20px 24px;
+      padding: 18px 24px;
       border-radius: 16px;
       box-shadow: 0 10px 25px -5px rgba(15, 23, 42, 0.25);
       display: flex;
-      flex-wrap: wrap;
       justify-content: space-between;
       align-items: center;
       gap: 16px;
@@ -85,28 +84,6 @@
       border-radius: 20px;
       font-weight: 500;
       backdrop-filter: blur(4px);
-    }
-
-    .header-stats {
-      display: flex;
-      gap: 16px;
-      flex-wrap: wrap;
-    }
-
-    .stat-pill {
-      background: rgba(255, 255, 255, 0.1);
-      border: 1px solid rgba(255, 255, 255, 0.15);
-      padding: 6px 14px;
-      border-radius: 10px;
-      font-size: 0.85rem;
-      display: flex;
-      align-items: center;
-      gap: 8px;
-    }
-
-    .stat-pill strong {
-      font-size: 1.05rem;
-      color: #38bdf8;
     }
 
     /* Controls Bar & Legend */
@@ -134,6 +111,7 @@
       gap: 10px;
       flex: 1;
       min-width: 280px;
+      flex-wrap: wrap;
     }
 
     .search-input, .select-input {
@@ -148,12 +126,48 @@
 
     .search-input {
       flex: 1;
+      min-width: 200px;
     }
 
     .search-input:focus, .select-input:focus {
       border-color: #3b82f6;
       background: #ffffff;
       box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.15);
+    }
+
+    /* Column Collapse Toggle Button */
+    .toggle-cols-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 9px 16px;
+      border-radius: 8px;
+      font-size: 0.88rem;
+      font-weight: 600;
+      cursor: pointer;
+      border: 1px solid #bfdbfe;
+      background: #eff6ff;
+      color: #1d4ed8;
+      transition: all 0.2s ease;
+      white-space: nowrap;
+    }
+
+    .toggle-cols-btn:hover {
+      background: #dbeafe;
+      border-color: #93c5fd;
+      transform: translateY(-1px);
+      box-shadow: 0 4px 6px -1px rgba(59, 130, 246, 0.15);
+    }
+
+    .toggle-cols-btn.is-expanded {
+      background: #f1f5f9;
+      border-color: #cbd5e1;
+      color: #475569;
+    }
+
+    .toggle-cols-btn.is-expanded:hover {
+      background: #e2e8f0;
+      color: #1e293b;
     }
 
     /* Legend Section */
@@ -187,19 +201,20 @@
     }
     
     .legend-dot.green { background: var(--color-green); box-shadow: 0 0 6px var(--color-green-glow); }
-    .legend-dot.orange { background: var(--color-orange); box-shadow: 0 0 6px rgba(249, 115, 22, 0.4); }
     .legend-dot.red { background: var(--color-red); box-shadow: 0 0 6px var(--color-red-glow); }
-    
-    .legend-bar-sample {
-      width: 24px;
-      height: 10px;
-      border-radius: 3px;
-      display: inline-block;
+
+    .legend-note {
+      font-size: 0.8rem;
+      color: #059669;
+      background: #ecfdf5;
+      padding: 3px 10px;
+      border-radius: 6px;
+      border: 1px solid #a7f3d0;
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      margin-left: auto;
     }
-    .legend-bar-sample.green { background: var(--color-green); }
-    .legend-bar-sample.light-gray { background: var(--color-gray-light); border: 1px solid #94a3b8; }
-    .legend-bar-sample.dark-gray { background: var(--color-gray-dark); }
-    .legend-bar-sample.orange { background: var(--color-orange); }
 
     /* Table Main Wrapper */
     .table-container {
@@ -208,7 +223,7 @@
       border: 1px solid var(--border-color);
       box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.05), 0 4px 6px -2px rgba(0, 0, 0, 0.02);
       overflow: auto;
-      max-height: calc(100vh - 270px);
+      max-height: calc(100vh - 210px);
       position: relative;
       -webkit-overflow-scrolling: touch;
     }
@@ -217,8 +232,14 @@
       border-collapse: separate;
       border-spacing: 0;
       width: 100%;
-      min-width: 1400px;
+      min-width: 980px;
       font-size: 0.85rem;
+      transition: min-width 0.2s ease;
+    }
+
+    /* Column Completed Hidden Rule */
+    .col-completed-hidden {
+      display: none !important;
     }
 
     /* Header Styling & Sticky Logic */
@@ -250,6 +271,19 @@
       background: #e2e8f0 !important;
       color: #0f172a;
       font-size: 0.9rem;
+    }
+
+    .collapsed-indicator {
+      display: inline-block;
+      font-size: 0.72rem;
+      font-weight: 500;
+      color: #15803d;
+      background: #dcfce7;
+      padding: 2px 8px;
+      border-radius: 12px;
+      margin-left: 6px;
+      vertical-align: middle;
+      border: 1px solid #86efac;
     }
 
     /* Subheader label style in Row 2 */
@@ -354,7 +388,7 @@
       display: block;
     }
 
-    /* Pure Dot Light Indicators (非 H~T 欄位) */
+    /* Pure Dot Light Indicators */
     .light-indicator {
       display: inline-flex;
       align-items: center;
@@ -401,16 +435,6 @@
       box-shadow: 0 0 6px var(--color-red-glow);
     }
 
-    .light-orange {
-      background-color: var(--color-orange-light);
-      color: #c2410c;
-      border: 1px solid rgba(249, 115, 22, 0.35);
-    }
-    .light-orange .dot {
-      background-color: var(--color-orange);
-      box-shadow: 0 0 8px rgba(249, 115, 22, 0.4);
-    }
-
     /* External Web Link Icon Button in Header Row 2 */
     .header-link-btn {
       display: inline-flex;
@@ -438,79 +462,6 @@
     .header-link-btn .link-svg {
       width: 13px;
       height: 13px;
-    }
-
-    /* Weekly Progress Cells (H~T 欄位, WK1~WK13) - Seamless Continuous Progress Bar */
-    .wk-cell {
-      padding: 4px 0px !important;
-      width: 48px;
-      min-width: 48px;
-      max-width: 48px;
-    }
-
-    .wk-cell.merge-border-right {
-      border-right-color: transparent !important;
-    }
-
-    .wk-bar-segment {
-      width: 100%;
-      height: 28px;
-      display: block;
-      transition: transform 0.15s ease;
-      cursor: pointer;
-      user-select: none;
-      border-radius: 6px;
-    }
-
-    .wk-bar-segment.merge-left {
-      border-top-left-radius: 0 !important;
-      border-bottom-left-radius: 0 !important;
-    }
-
-    .wk-bar-segment.merge-right {
-      border-top-right-radius: 0 !important;
-      border-bottom-right-radius: 0 !important;
-    }
-
-    .wk-bar-segment:hover {
-      transform: scaleY(1.15);
-      z-index: 5;
-    }
-
-    /* Green Segment: Completed */
-    .bar-green {
-      background-color: var(--color-green);
-      box-shadow: 0 2px 4px rgba(16, 185, 129, 0.25);
-    }
-
-    /* Light Gray Segment: Current Week */
-    .bar-light-gray {
-      background-color: var(--color-gray-light);
-      border-top: 1px solid #94a3b8;
-      border-bottom: 1px solid #94a3b8;
-    }
-    .wk-bar-segment.bar-light-gray:not(.merge-left) {
-      border-left: 1px solid #94a3b8;
-    }
-    .wk-bar-segment.bar-light-gray:not(.merge-right) {
-      border-right: 1px solid #94a3b8;
-    }
-
-    /* Dark Gray Segment: Future Week */
-    .bar-dark-gray {
-      background-color: var(--color-gray-dark);
-    }
-
-    /* Orange Segment: Lag / Gap */
-    .bar-orange {
-      background-color: var(--color-orange);
-      box-shadow: 0 2px 4px rgba(249, 115, 22, 0.25);
-      animation: pulse-orange 2.5s infinite;
-    }
-
-    @keyframes pulse-orange {
-      0%, 100% { opacity: 1; }
-      50% { opacity: 0.7; }
     }
 
     /* Modal / Popup Overlay */
@@ -609,16 +560,16 @@
       .app-header h1 {
         font-size: 1.15rem;
       }
-      .header-stats {
-        width: 100%;
-        justify-content: space-between;
-      }
-      .stat-pill {
-        flex: 1;
-        justify-content: center;
-      }
       .table-container {
-        max-height: calc(100vh - 290px);
+        max-height: calc(100vh - 230px);
+      }
+      .legend-note {
+        margin-left: 0;
+        width: 100%;
+      }
+      .toggle-cols-btn {
+        width: 100%;
+        justify-content: center;
       }
     }
 
@@ -743,14 +694,14 @@
       display: block;
     }
 
-    /* Logout Button */
+    /* Logout Button in Header */
     .logout-btn {
       background: rgba(239, 68, 68, 0.2);
       border: 1px solid rgba(239, 68, 68, 0.4);
       color: #fca5a5;
-      padding: 6px 12px;
+      padding: 7px 14px;
       border-radius: 8px;
-      font-size: 0.8rem;
+      font-size: 0.85rem;
       font-weight: 600;
       cursor: pointer;
       transition: all 0.2s ease;
@@ -786,123 +737,109 @@
 
   <!-- Protected App Content -->
   <div class="app-container hidden" id="app-container">
-    <!-- Header Banner -->
+    <!-- Header Banner: Title on the left, Logout button at the far right -->
     <header class="app-header">
       <h1>
         <span>WIIN AAR 門市人員任務追蹤表</span>
         <span class="badge">11月份報表</span>
       </h1>
-      <div class="header-stats">
-        <div class="stat-pill">經銷門市: <strong id="stat-stores">0</strong> 家</div>
-        <div class="stat-pill">追蹤人員: <strong id="stat-people">0</strong> 人</div>
-        <div class="stat-pill" id="pill-tasks-done">基礎任務達標: <strong id="stat-tasks-done">0</strong> 人</div>
-        <div class="stat-pill" id="pill-ignite">Ignite十一月: <strong id="stat-ignite">0</strong> 人</div>
-        <div class="stat-pill" id="pill-sc-monthly" style="display:none;">Sales Coach十月: <strong id="stat-sc-monthly">0</strong> 人</div>
-        <div class="stat-pill" id="pill-sc-app" style="display:none;">OS 27 軟體應用: <strong id="stat-sc-app">0</strong> 人</div>
-        <div class="stat-pill" id="pill-sc-resource" style="display:none;">新經銷商資源: <strong id="stat-sc-resource">0</strong> 人</div>
-        <div class="stat-pill" id="pill-sc-exam" style="display:none;">Mac 新功能測驗: <strong id="stat-sc-exam">0</strong> 人</div>
-        <div class="stat-pill" id="pill-profile">個資更新: <strong id="stat-profile">0</strong> 人</div>
-        <div class="stat-pill" id="pill-wk1" style="display:none;">WK1: <strong id="stat-wk1">0</strong> 人</div>
-        <div class="stat-pill" id="pill-wk2" style="display:none;">WK2: <strong id="stat-wk2">0</strong> 人</div>
-        <div class="stat-pill" id="pill-wk3" style="display:none;">WK3: <strong id="stat-wk3">0</strong> 人</div>
-        <div class="stat-pill" id="pill-wk4" style="display:none;">WK4: <strong id="stat-wk4">0</strong> 人</div>
-        <div class="stat-pill" id="pill-wk5" style="display:none;">WK5: <strong id="stat-wk5">0</strong> 人</div>
-        <div class="stat-pill" id="pill-wk6" style="display:none;">WK6: <strong id="stat-wk6">0</strong> 人</div>
-        <div class="stat-pill" id="pill-wk7" style="display:none;">WK7: <strong id="stat-wk7">0</strong> 人</div>
-        <div class="stat-pill" id="pill-wk8" style="display:none;">WK8: <strong id="stat-wk8">0</strong> 人</div>
-        <div class="stat-pill" id="pill-wk9" style="display:none;">WK9: <strong id="stat-wk9">0</strong> 人</div>
-        <div class="stat-pill" id="pill-wk10" style="display:none;">WK10: <strong id="stat-wk10">0</strong> 人</div>
-        <div class="stat-pill" id="pill-wk11" style="display:none;">WK11: <strong id="stat-wk11">0</strong> 人</div>
-        <button class="logout-btn" onclick="handleLogout()" title="登出並鎖定系統">🔒 登出</button>
-      </div>
+      <button class="logout-btn" onclick="handleLogout()" title="登出並鎖定系統">🔒 登出</button>
     </header>
 
-  <!-- Controls & Legend Panel -->
-  <section class="control-panel">
-    <div class="controls-row">
-      <div class="search-group">
-        <input type="text" id="search-input" class="search-input" placeholder="🔍 搜尋經銷商、門市或人員姓名..." oninput="renderTable()">
-        <select id="filter-store" class="select-input" onchange="renderTable()">
-          <option value="">所有門市</option>
-        </select>
-        <select id="filter-status" class="select-input" onchange="renderTable()">
-          <option value="">所有人員狀態</option>
-          <option value="base-done">基礎任務全達標者</option>
-          <option value="base-pending">基礎任務有未完成者</option>
-          <option value="profile-pending">個資未更新者</option>
-        </select>
+    <!-- Controls & Legend Panel -->
+    <section class="control-panel">
+      <div class="controls-row">
+        <div class="search-group">
+          <input type="text" id="search-input" class="search-input" placeholder="🔍 搜尋經銷商、門市或人員姓名..." oninput="renderTable()">
+          <select id="filter-store" class="select-input" onchange="renderTable()">
+            <option value="">所有門市</option>
+          </select>
+          <select id="filter-status" class="select-input" onchange="renderTable()">
+            <option value="">所有人員狀態</option>
+            <option value="base-done">基礎任務全達標者</option>
+            <option value="base-pending">基礎任務有未完成者</option>
+            <option value="profile-pending">個資未更新者</option>
+          </select>
+        </div>
+        <button type="button" id="toggle-completed-btn" class="toggle-cols-btn" onclick="toggleCompletedColumns()">
+          <span class="btn-icon">👁️</span>
+          <span class="btn-text">展開全數達標欄位 (7 欄)</span>
+        </button>
       </div>
-    </div>
 
-    <!-- Legend Explanation -->
-    <div class="legend-container">
-      <span class="legend-title">圖例說明：</span>
-      
-      <div class="legend-item" title="已完成">
-        <span class="legend-dot green"></span>
-        <span>已完成</span>
-      </div>
-      <div class="legend-item" title="未完成">
-        <span class="legend-dot red"></span>
-        <span>未完成</span>
-      </div>
-    </div>
-  </section>
+      <!-- Legend Explanation -->
+      <div class="legend-container">
+        <span class="legend-title">圖例說明：</span>
+        
+        <div class="legend-item" title="已完成">
+          <span class="legend-dot green"></span>
+          <span>已完成</span>
+        </div>
+        <div class="legend-item" title="未完成">
+          <span class="legend-dot red"></span>
+          <span>未完成</span>
+        </div>
 
-  <!-- Scrollable Frozen Table Container -->
-  <main class="table-container">
-    <table id="main-table">
-      <thead>
-        <!-- Header Row 1 -->
-        <tr>
-          <th class="col-dealer">經銷商</th>
-          <th class="col-store">門市</th>
-          <th class="col-name">姓名</th>
-          <th>更新<br>個人資料</th>
-          <th>Ignite<br>每月任務</th>
-          <th colspan="11" class="mypal-header">MyPal FY27Q1 11 週挑戰賽</th>
-          <th colspan="4" class="salescoach-header">Sales Coach</th>
-        </tr>
-        <!-- Header Row 2 -->
-        <tr>
-          <th class="col-dealer"></th>
-          <th class="col-store"></th>
-          <th class="col-name"></th>
-          <!-- Link Icon Button directly underneath "更新個人資料" header -->
-          <th style="padding: 4px;">
-            <a href="https://reurl.cc/dOW9gz" target="_blank" rel="noopener noreferrer" 
-               class="header-link-btn" title="🔗 點擊開啟：更新個人資料網頁">
-              <svg class="link-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path>
-                <polyline points="15 3 21 3 21 9"></polyline>
-                <line x1="10" y1="14" x2="21" y2="3"></line>
-              </svg>
-              <span>連結</span>
-            </a>
-          </th>
-          <th class="sub-header-label">十一月</th>
-          <th class="sub-header-label" style="font-size:0.75rem; white-space:nowrap; padding:4px 8px;">WK1</th>
-          <th class="sub-header-label" style="font-size:0.75rem; white-space:nowrap; padding:4px 8px;">WK2</th>
-          <th class="sub-header-label" style="font-size:0.75rem; white-space:nowrap; padding:4px 8px;">WK3</th>
-          <th class="sub-header-label" style="font-size:0.75rem; white-space:nowrap; padding:4px 8px;">WK4</th>
-          <th class="sub-header-label" style="font-size:0.75rem; white-space:nowrap; padding:4px 8px;">WK5</th>
-          <th class="sub-header-label" style="font-size:0.75rem; white-space:nowrap; padding:4px 8px;">WK6</th>
-          <th class="sub-header-label" style="font-size:0.75rem; white-space:nowrap; padding:4px 8px;">WK7</th>
-          <th class="sub-header-label" style="font-size:0.75rem; white-space:nowrap; padding:4px 8px;">WK8</th>
-          <th class="sub-header-label" style="font-size:0.75rem; white-space:nowrap; padding:4px 8px;">WK9</th>
-          <th class="sub-header-label" style="font-size:0.75rem; white-space:nowrap; padding:4px 8px;">WK10</th>
-          <th class="sub-header-label" style="font-size:0.75rem; white-space:nowrap; padding:4px 8px;">WK11</th>
-          <th class="sub-header-label" style="font-size:0.75rem; white-space:nowrap; padding:4px 8px;">每月成績<br>(十月)</th>
-          <th class="sub-header-label" style="font-size:0.75rem; white-space:nowrap; padding:4px 8px;">OS 27<br>軟體應用</th>
-          <th class="sub-header-label" style="font-size:0.75rem; white-space:nowrap; padding:4px 8px;">新經銷商<br>培訓資源</th>
-          <th class="sub-header-label" style="font-size:0.75rem; white-space:nowrap; padding:4px 8px;">測驗 - Mac<br>的新功能</th>
-        </tr>
-      </thead>
-      <tbody id="table-body">
-        <!-- JS Dynamic Rows -->
-      </tbody>
-    </table>
-  </main>
+        <div class="legend-note">
+          <span>💡 已全數達標的欄位預設摺疊，可由右上按鈕隨時展開</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- Scrollable Frozen Table Container -->
+    <main class="table-container">
+      <table id="main-table">
+        <thead>
+          <!-- Header Row 1 -->
+          <tr>
+            <th class="col-dealer">經銷商</th>
+            <th class="col-store">門市</th>
+            <th class="col-name">姓名</th>
+            <th class="col-profile">更新<br>個人資料</th>
+            <th class="col-ignite">Ignite<br>每月任務</th>
+            <th id="th-mypal" colspan="11" class="mypal-header">MyPal FY27Q1 11 週挑戰賽</th>
+            <th id="th-sc" colspan="4" class="salescoach-header">Sales Coach</th>
+          </tr>
+          <!-- Header Row 2 -->
+          <tr>
+            <th class="col-dealer"></th>
+            <th class="col-store"></th>
+            <th class="col-name"></th>
+            <!-- Link Icon Button directly underneath "更新個人資料" header -->
+            <th class="col-profile" style="padding: 4px;">
+              <a href="https://reurl.cc/dOW9gz" target="_blank" rel="noopener noreferrer" 
+                 class="header-link-btn" title="🔗 點擊開啟：更新個人資料網頁">
+                <svg class="link-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path>
+                  <polyline points="15 3 21 3 21 9"></polyline>
+                  <line x1="10" y1="14" x2="21" y2="3"></line>
+                </svg>
+                <span>連結</span>
+              </a>
+            </th>
+            <th class="col-ignite sub-header-label">十一月</th>
+            <th class="col-wk1 sub-header-label" style="font-size:0.75rem; white-space:nowrap; padding:4px 8px;">WK1</th>
+            <th class="col-wk2 sub-header-label" style="font-size:0.75rem; white-space:nowrap; padding:4px 8px;">WK2</th>
+            <th class="col-wk3 sub-header-label" style="font-size:0.75rem; white-space:nowrap; padding:4px 8px;">WK3</th>
+            <th class="col-wk4 sub-header-label" style="font-size:0.75rem; white-space:nowrap; padding:4px 8px;">WK4</th>
+            <th class="col-wk5 sub-header-label" style="font-size:0.75rem; white-space:nowrap; padding:4px 8px;">WK5</th>
+            <th class="col-wk6 sub-header-label" style="font-size:0.75rem; white-space:nowrap; padding:4px 8px;">WK6</th>
+            <th class="col-wk7 sub-header-label" style="font-size:0.75rem; white-space:nowrap; padding:4px 8px;">WK7</th>
+            <th class="col-wk8 sub-header-label" style="font-size:0.75rem; white-space:nowrap; padding:4px 8px;">WK8</th>
+            <th class="col-wk9 sub-header-label" style="font-size:0.75rem; white-space:nowrap; padding:4px 8px;">WK9</th>
+            <th class="col-wk10 sub-header-label" style="font-size:0.75rem; white-space:nowrap; padding:4px 8px;">WK10</th>
+            <th class="col-wk11 sub-header-label" style="font-size:0.75rem; white-space:nowrap; padding:4px 8px;">WK11</th>
+            <th class="col-sc-monthly sub-header-label" style="font-size:0.75rem; white-space:nowrap; padding:4px 8px;">每月成績<br>(十月)</th>
+            <th class="col-sc-app sub-header-label" style="font-size:0.75rem; white-space:nowrap; padding:4px 8px;">OS 27<br>軟體應用</th>
+            <th class="col-sc-resource sub-header-label" style="font-size:0.75rem; white-space:nowrap; padding:4px 8px;">新經銷商<br>培訓資源</th>
+            <th class="col-sc-exam sub-header-label" style="font-size:0.75rem; white-space:nowrap; padding:4px 8px;">測驗 - Mac<br>的新功能</th>
+          </tr>
+        </thead>
+        <tbody id="table-body">
+          <!-- JS Dynamic Rows -->
+        </tbody>
+      </table>
+    </main>
   </div> <!-- End #app-container -->
 
   <!-- Detail Modal -->
@@ -923,16 +860,129 @@
     const rawData = [
       { id: 1, dealer: "旗冠", store: "The Lab 微風南京店", name: "吳偉誠", profile: "V", igniteMonthly: "", wk1: "V", wk2: "V", wk3: "V", wk4: "V", wk5: "V", wk6: "", wk7: "", wk8: "", wk9: "", wk10: "", wk11: "", scMonthly: "V", scApp: "", scResource: "", scExam: "V" },
       { id: 2, dealer: "旗冠", store: "The Lab 微風南京店", name: "吳瑞芸", profile: "V", igniteMonthly: "", wk1: "V", wk2: "V", wk3: "V", wk4: "V", wk5: "V", wk6: "", wk7: "", wk8: "", wk9: "", wk10: "", wk11: "", scMonthly: "V", scApp: "", scResource: "", scExam: "V" },
-      { id: 3, dealer: "旗冠", store: "The Lab 微風南京店", name: "林若蓁", profile: "V", igniteMonthly: "V", wk1: "V", wk2: "V", wk3: "V", wk4: "V", wk5: "", wk6: "", wk7: "", wk8: "", wk9: "", wk10: "", wk11: "", scMonthly: "V", scApp: "V", scResource: "V", scExam: "" },
+      { id: 3, dealer: "旗冠", store: "The Lab 微風南京店", name: "林若蓁", profile: "V", igniteMonthly: "V", wk1: "V", wk2: "V", wk3: "V", wk4: "V", wk5: "V", wk6: "", wk7: "", wk8: "", wk9: "", wk10: "", wk11: "", scMonthly: "V", scApp: "V", scResource: "V", scExam: "" },
       { id: 4, dealer: "旗冠", store: "The Lab 微風南京店", name: "許至權", profile: "V", igniteMonthly: "", wk1: "V", wk2: "V", wk3: "V", wk4: "V", wk5: "V", wk6: "", wk7: "", wk8: "", wk9: "", wk10: "", wk11: "", scMonthly: "V", scApp: "", scResource: "", scExam: "V" },
       { id: 5, dealer: "旗冠", store: "The Lab 微風南京店", name: "許宥然", profile: "V", igniteMonthly: "", wk1: "V", wk2: "V", wk3: "V", wk4: "V", wk5: "V", wk6: "", wk7: "", wk8: "", wk9: "", wk10: "", wk11: "", scMonthly: "V", scApp: "", scResource: "", scExam: "V" },
-      { id: 6, dealer: "旗冠", store: "The Lab 微風南京店", name: "彭敬恒", profile: "V", igniteMonthly: "V", wk1: "V", wk2: "V", wk3: "V", wk4: "V", wk5: "", wk6: "", wk7: "", wk8: "", wk9: "", wk10: "", wk11: "", scMonthly: "V", scApp: "V", scResource: "V", scExam: "" }
+      { id: 6, dealer: "旗冠", store: "The Lab 微風南京店", name: "彭敬恒", profile: "V", igniteMonthly: "V", wk1: "V", wk2: "V", wk3: "V", wk4: "V", wk5: "V", wk6: "", wk7: "", wk8: "", wk9: "", wk10: "", wk11: "", scMonthly: "V", scApp: "V", scResource: "V", scExam: "" }
     ];
+
+    // Task columns specification for collapsing logic
+    const TASK_COLUMNS = [
+      { key: 'profile', className: 'col-profile', group: 'profile', name: '更新個人資料' },
+      { key: 'igniteMonthly', className: 'col-ignite', group: 'ignite', name: 'Ignite每月任務' },
+      { key: 'wk1', className: 'col-wk1', group: 'mypal', name: 'WK1' },
+      { key: 'wk2', className: 'col-wk2', group: 'mypal', name: 'WK2' },
+      { key: 'wk3', className: 'col-wk3', group: 'mypal', name: 'WK3' },
+      { key: 'wk4', className: 'col-wk4', group: 'mypal', name: 'WK4' },
+      { key: 'wk5', className: 'col-wk5', group: 'mypal', name: 'WK5' },
+      { key: 'wk6', className: 'col-wk6', group: 'mypal', name: 'WK6' },
+      { key: 'wk7', className: 'col-wk7', group: 'mypal', name: 'WK7' },
+      { key: 'wk8', className: 'col-wk8', group: 'mypal', name: 'WK8' },
+      { key: 'wk9', className: 'col-wk9', group: 'mypal', name: 'WK9' },
+      { key: 'wk10', className: 'col-wk10', group: 'mypal', name: 'WK10' },
+      { key: 'wk11', className: 'col-wk11', group: 'mypal', name: 'WK11' },
+      { key: 'scMonthly', className: 'col-sc-monthly', group: 'sc', name: 'Sales Coach每月成績' },
+      { key: 'scApp', className: 'col-sc-app', group: 'sc', name: 'Sales Coach OS 27軟體應用' },
+      { key: 'scResource', className: 'col-sc-resource', group: 'sc', name: 'Sales Coach新經銷商培訓資源' },
+      { key: 'scExam', className: 'col-sc-exam', group: 'sc', name: 'Sales Coach測驗 - Mac的新功能' }
+    ];
+
+    // State: Default collapsed for columns completed by all tracked people
+    let isCompletedColumnsCollapsed = true;
+
+    // Helper: Identify columns where 100% of tracked people have completed
+    function getCompletedColumns() {
+      return TASK_COLUMNS.filter(col => {
+        return rawData.length > 0 && rawData.every(item => {
+          const v = item[col.key];
+          return v && v.trim().toUpperCase() === 'V';
+        });
+      });
+    }
+
+    // Toggle Collapsing State
+    function toggleCompletedColumns() {
+      isCompletedColumnsCollapsed = !isCompletedColumnsCollapsed;
+      applyColumnVisibility();
+    }
+
+    // Apply Visibility to DOM elements
+    function applyColumnVisibility() {
+      const completedCols = getCompletedColumns();
+      const completedClasses = new Set(completedCols.map(c => c.className));
+      const toggleBtn = document.getElementById('toggle-completed-btn');
+      const tableEl = document.getElementById('main-table');
+      const thMypal = document.getElementById('th-mypal');
+      const thSc = document.getElementById('th-sc');
+
+      // Update All Header & Body Cells
+      TASK_COLUMNS.forEach(col => {
+        const isCompleted = completedClasses.has(col.className);
+        const shouldHide = isCompletedColumnsCollapsed && isCompleted;
+        const elements = document.querySelectorAll(`.${col.className}`);
+        elements.forEach(el => {
+          if (shouldHide) {
+            el.classList.add('col-completed-hidden');
+          } else {
+            el.classList.remove('col-completed-hidden');
+          }
+        });
+      });
+
+      // Count hidden columns under MyPal and Sales Coach
+      let hiddenMypalCount = 0;
+      let hiddenScCount = 0;
+      if (isCompletedColumnsCollapsed) {
+        hiddenMypalCount = completedCols.filter(c => c.group === 'mypal').length;
+        hiddenScCount = completedCols.filter(c => c.group === 'sc').length;
+      }
+
+      // Update Colspan and Header Titles
+      if (thMypal) {
+        const mypalSpan = 11 - hiddenMypalCount;
+        thMypal.colSpan = mypalSpan;
+        if (hiddenMypalCount > 0) {
+          thMypal.innerHTML = `MyPal FY27Q1 11 週挑戰賽 <span class="collapsed-indicator">已摺疊 WK1~WK${hiddenMypalCount} 全達標</span>`;
+        } else {
+          thMypal.innerHTML = `MyPal FY27Q1 11 週挑戰賽`;
+        }
+      }
+
+      if (thSc) {
+        const scSpan = 4 - hiddenScCount;
+        thSc.colSpan = scSpan;
+        if (hiddenScCount > 0) {
+          thSc.innerHTML = `Sales Coach <span class="collapsed-indicator">已摺疊十月成績全達標</span>`;
+        } else {
+          thSc.innerHTML = `Sales Coach`;
+        }
+      }
+
+      // Adjust minWidth of Table
+      if (tableEl) {
+        tableEl.style.minWidth = isCompletedColumnsCollapsed ? '980px' : '1400px';
+      }
+
+      // Update Toggle Button Content & State
+      if (toggleBtn) {
+        const count = completedCols.length;
+        if (isCompletedColumnsCollapsed) {
+          toggleBtn.classList.remove('is-expanded');
+          toggleBtn.innerHTML = `<span class="btn-icon">👁️</span><span class="btn-text">展開全數達標欄位 (${count} 欄)</span>`;
+          toggleBtn.title = "點擊展開已被預設隱藏的全數達標欄位";
+        } else {
+          toggleBtn.classList.add('is-expanded');
+          toggleBtn.innerHTML = `<span class="btn-icon">📁</span><span class="btn-text">摺疊全數達標欄位 (${count} 欄)</span>`;
+          toggleBtn.title = "點擊摺疊隱藏全數達標欄位";
+        }
+      }
+    }
 
     // Initialize Store Filter Dropdown
     function initStoreFilter() {
       const stores = Array.from(new Set(rawData.map(item => item.store)));
       const select = document.getElementById('filter-store');
+      select.innerHTML = '<option value="">所有門市</option>';
       stores.forEach(s => {
         const opt = document.createElement('option');
         opt.value = s;
@@ -1022,65 +1072,6 @@
         return matchSearch && matchStore && matchStatus;
       });
 
-      // Update Stats
-      const uniqueStores = new Set(filtered.map(i => i.store)).size;
-      const totalFiltered = filtered.length;
-      document.getElementById('stat-stores').textContent = uniqueStores;
-      document.getElementById('stat-people').textContent = totalFiltered;
-
-      // Helper to update stat text and hide if fully completed
-      function updateStatPill(count, pillId, statId, isRatio = false) {
-        const statEl = document.getElementById(statId);
-        if (statEl) {
-          statEl.textContent = isRatio ? `${count} / ${totalFiltered}` : count;
-        }
-        const pillEl = document.getElementById(pillId);
-        if (pillEl) {
-          // 只列出未全數完成的，已全數完成的就不顯示
-          const isAllDone = totalFiltered > 0 && count >= totalFiltered;
-          pillEl.style.display = isAllDone ? 'none' : 'flex';
-        }
-      }
-
-      const tasksDoneCount = filtered.filter(isBaseTasksDone).length;
-      updateStatPill(tasksDoneCount, 'pill-tasks-done', 'stat-tasks-done');
-
-      const igniteDoneCount = filtered.filter(i => i.igniteMonthly && i.igniteMonthly.trim().toUpperCase() === 'V').length;
-      updateStatPill(igniteDoneCount, 'pill-ignite', 'stat-ignite');
-
-      const scMonthlyDoneCount = filtered.filter(i => i.scMonthly && i.scMonthly.trim().toUpperCase() === 'V').length;
-      updateStatPill(scMonthlyDoneCount, 'pill-sc-monthly', 'stat-sc-monthly');
-
-      // Helper for optional / secondary course stat pills (only show if started and not all completed)
-      function updateSubTaskPill(count, pillId, statId) {
-        const statEl = document.getElementById(statId);
-        if (statEl) statEl.textContent = count;
-        const pillEl = document.getElementById(pillId);
-        if (pillEl) {
-          const shouldShow = totalFiltered > 0 && count > 0 && count < totalFiltered;
-          pillEl.style.display = shouldShow ? 'flex' : 'none';
-        }
-      }
-
-      const scAppCount = filtered.filter(i => i.scApp && i.scApp.trim().toUpperCase() === 'V').length;
-      updateSubTaskPill(scAppCount, 'pill-sc-app', 'stat-sc-app');
-
-      const scResourceCount = filtered.filter(i => i.scResource && i.scResource.trim().toUpperCase() === 'V').length;
-      updateSubTaskPill(scResourceCount, 'pill-sc-resource', 'stat-sc-resource');
-
-      const scExamCount = filtered.filter(i => i.scExam && i.scExam.trim().toUpperCase() === 'V').length;
-      updateSubTaskPill(scExamCount, 'pill-sc-exam', 'stat-sc-exam');
-
-      const profileDoneCount = filtered.filter(isProfileDone).length;
-      updateStatPill(profileDoneCount, 'pill-profile', 'stat-profile', true);
-
-      // WK1 ~ WK11 Challenge Weekly Stat Pills
-      for (let w = 1; w <= 11; w++) {
-        const key = `wk${w}`;
-        const count = filtered.filter(i => i[key] && i[key].trim().toUpperCase() === 'V').length;
-        updateSubTaskPill(count, `pill-wk${w}`, `stat-wk${w}`);
-      }
-
       // Render Rows
       filtered.forEach(item => {
         const tr = document.createElement('tr');
@@ -1090,27 +1081,30 @@
           <td class="col-dealer"><span class="text-ellipsis" title="${item.dealer}">${item.dealer}</span></td>
           <td class="col-store"><span class="text-ellipsis" title="${item.store}">${item.store}</span></td>
           <td class="col-name"><strong style="color:#0f172a;">${item.name}</strong></td>
-          <td>${getLightHtml(item.profile)}</td>
-          <td>${getLightHtml(item.igniteMonthly)}</td>
-          <td>${getLightHtml(item.wk1)}</td>
-          <td>${getLightHtml(item.wk2)}</td>
-          <td>${getLightHtml(item.wk3)}</td>
-          <td>${getLightHtml(item.wk4)}</td>
-          <td>${getLightHtml(item.wk5)}</td>
-          <td>${getLightHtml(item.wk6)}</td>
-          <td>${getLightHtml(item.wk7)}</td>
-          <td>${getLightHtml(item.wk8)}</td>
-          <td>${getLightHtml(item.wk9)}</td>
-          <td>${getLightHtml(item.wk10)}</td>
-          <td>${getLightHtml(item.wk11)}</td>
-          <td>${getLightHtml(item.scMonthly)}</td>
-          <td>${getLightHtml(item.scApp)}</td>
-          <td>${getLightHtml(item.scResource)}</td>
-          <td>${getLightHtml(item.scExam)}</td>
+          <td class="col-profile">${getLightHtml(item.profile)}</td>
+          <td class="col-ignite">${getLightHtml(item.igniteMonthly)}</td>
+          <td class="col-wk1">${getLightHtml(item.wk1)}</td>
+          <td class="col-wk2">${getLightHtml(item.wk2)}</td>
+          <td class="col-wk3">${getLightHtml(item.wk3)}</td>
+          <td class="col-wk4">${getLightHtml(item.wk4)}</td>
+          <td class="col-wk5">${getLightHtml(item.wk5)}</td>
+          <td class="col-wk6">${getLightHtml(item.wk6)}</td>
+          <td class="col-wk7">${getLightHtml(item.wk7)}</td>
+          <td class="col-wk8">${getLightHtml(item.wk8)}</td>
+          <td class="col-wk9">${getLightHtml(item.wk9)}</td>
+          <td class="col-wk10">${getLightHtml(item.wk10)}</td>
+          <td class="col-wk11">${getLightHtml(item.wk11)}</td>
+          <td class="col-sc-monthly">${getLightHtml(item.scMonthly)}</td>
+          <td class="col-sc-app">${getLightHtml(item.scApp)}</td>
+          <td class="col-sc-resource">${getLightHtml(item.scResource)}</td>
+          <td class="col-sc-exam">${getLightHtml(item.scExam)}</td>
         `;
 
         tbody.appendChild(tr);
       });
+
+      // Apply visibility according to isCompletedColumnsCollapsed
+      applyColumnVisibility();
     }
 
     // Modal Control
